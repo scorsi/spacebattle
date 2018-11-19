@@ -1,0 +1,15 @@
+[requires]
+boost_asio/1.66.0@bincrafters/stable
+sfml/2.5.1@bincrafters/stable
+
+[options]
+sfml:shared=True
+sfml:window=True
+sfml:graphics=True
+
+[generators]
+cmake
+
+[imports]
+bin, *.dll -> ./bin
+lib, *.dylib* -> ./bin
