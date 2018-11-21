@@ -4,6 +4,14 @@ The protocol of the SpaceBattle game.
 
 ## Serialization
 
+### Packet
+
+A packet is formatted as follow: `<length:int><message:message>`.
+
+- `length` : The length in bytes of the following message.
+
+- `message` : The message sent.
+
 ### **Message**
 
 A message is formatted as follow: `<op:int><id:int><status:int><payload:any>?`.
@@ -22,7 +30,7 @@ A array is formatted as follow: `<length:int>[<elem:T>]` where `T` is the type o
 
 - `length` : The number of element `T`.
 
-- `elem` : An element of type `T`. 
+- `elem` : An element of type `T`. 
 
 ### String
 
@@ -64,24 +72,230 @@ A room is formatted as follow: `<id:int><name:string><status:int><game-type:int>
 
 ## Operations
 
-- `100` **USERNAME** : Allow to ask/set the username.
+### `100` **USERNAME** : _Allow the server to ask and the client to set its username_.
 
-- `200` **ROOM_FETCH** : Client fetch available rooms.
+#### Errors
 
-- `201` **ROOM_CONNECT** : Client tries to connect to server.
+##### Server errors
 
-- `202` **ROOM_DISCTONNECT** : Client inform the server of the room disconnection.
+- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
 
-- `203` **ROOM_READY** : Server informs clients that the room is ready. 
+- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
 
-- `300` **CLIENT_FETCH** : Client fetch connected clients of the room.
+- `10` **USERNAME__ALREADY_TAKEN** : The given username by the client was already been taken
 
-- `301` **CLIENT_CONNECT** : Server inform client that a client has been connected to the room.
+- `11` **USERNAME_INVALID** : The given username by the client is invalid
 
-- `302` **CLIENT_DISCONNECT** : Server inform client that a client has been disconnected from the server.
+##### Client errors
 
-- `303` **CLIENT_READY** : Server inform clients that a client is ready.
+- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
 
-- `304` **GAME_LAUNCH** : Server inform clients that the game is starting.
+- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
 
-- `305` **GAME_START** : Server inform clients that the game has started (all clients loads the game).
+#### Operation communication steps
+
+1. Server : asks username to client
+
+   `USERNAME``0``OK`
+
+2. Client : answers to server with username
+
+   `USERNAME``1``OK``"username"`
+
+3. Server : answers
+
+   - Server accepts the client username
+
+     `USERNAME``2``OK`
+
+   - Server don't accepts the client username
+
+     `USERNAME``2``ERROR``error_message`
+
+4. Client : back to number 2. until server accepts
+
+### `200` **ROOM_FETCH** : _Allow the client to fetch available rooms_.
+
+#### Errors
+
+##### Server errors
+
+- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+
+- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+
+##### Client errors
+
+- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+
+- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+
+#### Operation communication steps
+
+1. 
+
+2. 
+
+### `201` **ROOM_CONNECT** : _Allow the client to connect to a room_.
+
+#### Errors
+
+##### Server errors
+
+- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+
+- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+
+##### Client errors
+
+- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+
+- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+
+#### Operation communication steps
+
+1. 
+
+### `202` **ROOM_DISCONNECT** : _Allow the client to disconnect from its actual room_.
+
+#### Errors
+
+##### Server errors
+
+- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+
+- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+
+##### Client errors
+
+- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+
+- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+
+#### Operation communication steps
+
+### `203` **ROOM_READY** : _Allow the server to inform the connected clients of a room that the room is ready to be launched_.
+
+#### Errors
+
+##### Server errors
+
+- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+
+- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+
+##### Client errors
+
+- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+
+- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+
+#### Operation communication steps
+
+### `300` **CLIENT_FETCH** : _Allow the client to fetch information of another client_.
+
+#### Errors
+
+##### Server errors
+
+- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+
+- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+
+##### Client errors
+
+- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+
+- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+
+#### Operation communication steps
+
+### `301` **CLIENT_CONNECTED** : _Allow the server to inform connected client of a room that a new client has been connected_.
+
+#### Errors
+
+##### Server errors
+
+- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+
+- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+
+##### Client errors
+
+- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+
+- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+
+#### Operation communication steps
+
+### `302` **CLIENT_DISCONNECTED** : _Allow the server to inform connected client of a room that a client has been disconnected_.
+
+#### Errors
+
+##### Server errors
+
+- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+
+- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+
+##### Client errors
+
+- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+
+- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+
+#### Operation communication steps
+
+### `303` **CLIENT_READY** : _Allow the server to inform connected clients of a room that a cient is now ready or no longer ready_.
+
+#### Errors
+
+##### Server errors
+
+- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+
+- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+
+##### Client errors
+
+- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+
+- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+
+#### Operation communication steps
+
+### `400` **GAME_LAUNCHING** : _Allow the server to inform connected clients of a room that the game will launch_.
+
+#### Errors
+
+##### Server errors
+
+- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+
+- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+
+##### Client errors
+
+- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+
+- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+
+#### Operation communication steps
+
+### `401` **GAME_STARTED** : _Allow the server to inform connected clients of a game that the game is started_.
+
+#### Errors
+
+##### Server errors
+
+- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+
+- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+
+##### Client errors
+
+- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+
+- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+
+#### Operation communication steps
