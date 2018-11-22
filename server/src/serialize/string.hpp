@@ -3,7 +3,6 @@
 #include <string>
 #include <cereal/archives/binary.hpp>
 
-namespace network {
 namespace serialize {
 
 template<class Archive>
@@ -22,5 +21,4 @@ void load_string(Archive &ar, std::string &s) {
     s = cs;
 }
 
-}
 }

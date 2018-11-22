@@ -1,11 +1,13 @@
 #pragma once
 
+#include <memory>
 #include <cereal/archives/binary.hpp>
 #include "network/message.hpp"
 #include "network/session.hpp"
-#include "network/serialize/string.hpp"
+#include "serialize/string.hpp"
 
-namespace network {
+#define OPERATION_USERNAME_ID (100)
+
 namespace operation {
 namespace username {
 struct step_client_answer_username {
@@ -22,15 +24,11 @@ struct step_client_answer_username {
     }
 };
 
-bool is_valid_send(int id);
+std::unique_ptr<network::packet> handle_send(std::shared_ptr<network::session> session, int id);
 
-bool is_valid_receive(const network::message &msg);
+std::unique_ptr<network::packet> handle_receive(std::shared_ptr<network::session> session,
+                                                const network::message &msg,
+                                                cereal::BinaryInputArchive &ar);
 
-bool handle_send(std::shared_ptr<network::session> session, int id);
-
-bool handle_receive(std::shared_ptr<network::session> session,
-                    const network::message &msg,
-                    cereal::BinaryInputArchive &ar);
-}
 }
 }

@@ -27,7 +27,7 @@ void session::do_read() {
     auto self(shared_from_this());
     asio::async_read(
             socket_,
-            asio::buffer(read_msg_.data(), network::packet::header_length),
+            asio::buffer(read_msg_.data(), PACKET_HEADER_LENGTH),
             [this, self](std::error_code ec, std::size_t /* length */) {
                 if (!ec && read_msg_.decode_header()) {
                     asio::async_read(

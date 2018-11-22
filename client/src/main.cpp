@@ -60,7 +60,7 @@ private:
     void do_read_header() {
         asio::async_read(
                 socket_,
-                asio::buffer(read_msg_.data(), network::packet::header_length),
+                asio::buffer(read_msg_.data(), PACKET_HEADER_LENGTH),
                 [this](std::error_code ec, std::size_t /*length*/) {
                     if (!ec && read_msg_.decode_header()) {
                         do_read_body();
@@ -151,7 +151,7 @@ int main(int argc, char *argv[]) {
         packet.encode_header();
 
         std::cout << "\""
-                  << std::string(packet.data(), packet.body_length() + packet.header_length)
+                  << std::string(packet.data(), packet.body_length() + PACKET_HEADER_LENGTH)
                   << "\""
                   << std::endl;
         c.write(packet);

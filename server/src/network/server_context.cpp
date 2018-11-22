@@ -1,7 +1,6 @@
 #include "server_context.hpp"
 
 #include <iostream>
-#include "network/operation/username.hpp"
 
 namespace network {
 
@@ -11,7 +10,6 @@ server_context::server_context() {
 void server_context::add_session(std::shared_ptr<network::session> session) {
     std::cout << "Adding session...";
     session_list_.push_back(session);
-    network::operation::username::handle_send(session, 0);
     std::cout << " done." << std::endl;
 }
 

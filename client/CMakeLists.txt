@@ -7,5 +7,5 @@ conan_basic_setup()
 
 include_directories(src)
 
-add_executable(spacebattle_client src/main.cpp src/network/packet.cpp)
+add_executable(spacebattle_client src/main.cpp)
 target_link_libraries(spacebattle_client ${CONAN_LIBS})

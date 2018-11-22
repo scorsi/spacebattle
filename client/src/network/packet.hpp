@@ -1,35 +1,73 @@
 #pragma once
 
 #include <cstddef>
+#include <cstdlib>
+#include <string>
+#include <cereal/archives/binary.hpp>
 
 namespace network {
-    class packet {
-    public:
-        enum { header_length = 4 };
-        enum { max_body_length = 512 };
 
-        packet();
+#define PACKET_HEADER_LENGTH (sizeof(std::size_t))
+#define PACKET_BODY_LENGTH (1024)
 
-        const char *data() const;
+class packet {
+public:
+    packet()
+            : body_length_(0),
+              data_("") {
+    }
 
-        char *data();
+    const char *data() const {
+        return data_;
+    }
 
-        std::size_t length() const;
+    char *data() {
+        return data_;
+    }
 
-        const char *body() const;
+    std::size_t length() const {
+        return PACKET_HEADER_LENGTH + body_length_;
+    }
 
-        char *body();
+    const char *body() const {
+        return data_ + PACKET_HEADER_LENGTH;
+    }
 
-        std::size_t body_length() const;
+    char *body() {
+        return data_ + PACKET_HEADER_LENGTH;
+    }
 
-        void body_length(std::size_t new_length);
+    std::size_t body_length() const {
+        return body_length_;
+    }
 
-        bool decode_header();
+    void body_length(std::size_t new_length) {
+        body_length_ = new_length;
+    }
 
-        void encode_header();
+    bool decode_header() {
+        char header[PACKET_HEADER_LENGTH + 1] = "";
+        std::istringstream ss(std::string(data_, PACKET_HEADER_LENGTH));
+        cereal::BinaryInputArchive archive(ss);
+        std::size_t length;
+        archive(length);
+        body_length_ = length;
+        return true;
+    }
 
-    private:
-        char data_[header_length + max_body_length];
-        std::size_t body_length_;
-    };
+    void encode_header() {
+        char header[PACKET_HEADER_LENGTH + 1] = "";
+        std::ostringstream ss;
+        {
+            cereal::BinaryOutputArchive archive(ss);
+            archive(body_length_);
+        }
+        std::memcpy(data_, ss.str().c_str(), PACKET_HEADER_LENGTH);
+    }
+
+private:
+    char data_[PACKET_HEADER_LENGTH + PACKET_BODY_LENGTH];
+    std::size_t body_length_;
+};
+
 }
