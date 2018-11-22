@@ -12,8 +12,11 @@
 #include <deque>
 #include <iostream>
 #include <thread>
-#include "asio.hpp"
+#include <asio.hpp>
+#include <cereal/archives/binary.hpp>
 #include "network/packet.hpp"
+#include "network/message.hpp"
+#include "network/serialize/string.hpp"
 
 using asio::ip::tcp;
 
@@ -73,8 +76,14 @@ private:
                 asio::buffer(read_msg_.body(), read_msg_.body_length()),
                 [this](std::error_code ec, std::size_t /*length*/) {
                     if (!ec) {
-                        std::cout.write(read_msg_.body(), read_msg_.body_length());
-                        std::cout << "\n";
+                        std::istringstream ss(std::string(read_msg_.body(), read_msg_.body_length()));
+                        network::message message;
+                        {
+                            cereal::BinaryInputArchive ar(ss);
+                            ar(message);
+                        }
+                        std::cout << message.type << " " << message.id << " " << static_cast<bool>(message.status)
+                                  << std::endl;
                         do_read_header();
                     } else {
                         socket_.close();
@@ -121,14 +130,35 @@ int main(int argc, char *argv[]) {
 
         std::thread t([&io_service]() { io_service.run(); });
 
-        char line[network::packet::max_body_length + 1];
-        while (std::cin.getline(line, network::packet::max_body_length + 1)) {
-            network::packet msg;
-            msg.body_length(std::strlen(line));
-            std::memcpy(msg.body(), line, msg.body_length());
-            msg.encode_header();
-            c.write(msg);
+        //////
+        network::packet packet;
+        std::ostringstream ss;
+        {
+            cereal::BinaryOutputArchive ar(ss);
+
+            network::message{
+                    network::operation_type::username,
+                    1,
+                    network::operation_status::ok
+            }.serialize(ar);
+
+            network::serialize::save_string(ar, std::string("Scorsi"));
         }
+        auto s = ss.str();
+
+        packet.body_length(s.length());
+        std::memcpy(packet.body(), s.c_str(), packet.body_length());
+        packet.encode_header();
+
+        std::cout << "\""
+                  << std::string(packet.data(), packet.body_length() + packet.header_length)
+                  << "\""
+                  << std::endl;
+        c.write(packet);
+        //////
+
+        char line[1];
+        std::cin.getline(line, 1);
 
         c.close();
         t.join();

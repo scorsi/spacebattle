@@ -37,7 +37,7 @@ namespace network {
     }
 
     bool packet::decode_header() {
-        char header[header_length + 1] = "\0";
+        char header[header_length + 1] = "";
         std::strncat(header, data_, header_length);
         body_length_ = (std::size_t) std::atoi(header);
         if (body_length_ > max_body_length) {
