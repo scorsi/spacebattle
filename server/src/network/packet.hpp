@@ -3,33 +3,35 @@
 #include <cstddef>
 
 namespace network {
-    class packet {
-    public:
-        enum { header_length = 4 };
-        enum { max_body_length = 512 };
 
-        packet();
+class packet {
+public:
+    enum { header_length = 4 };
+    enum { max_body_length = 512 };
 
-        const char *data() const;
+    packet();
 
-        char *data();
+    const char *data() const;
 
-        std::size_t length() const;
+    char *data();
 
-        const char *body() const;
+    std::size_t length() const;
 
-        char *body();
+    const char *body() const;
 
-        std::size_t body_length() const;
+    char *body();
 
-        void body_length(std::size_t new_length);
+    std::size_t body_length() const;
 
-        bool decode_header();
+    void body_length(std::size_t new_length);
 
-        void encode_header();
+    bool decode_header();
 
-    private:
-        char data_[header_length + max_body_length];
-        std::size_t body_length_;
-    };
+    void encode_header();
+
+private:
+    char data_[header_length + max_body_length];
+    std::size_t body_length_;
+};
+
 }
