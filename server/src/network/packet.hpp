@@ -65,6 +65,17 @@ public:
         std::memcpy(data_, ss.str().c_str(), PACKET_HEADER_LENGTH);
     }
 
+    static packet create_from_stream(const std::stringstream &stream) {
+        network::packet p;
+        auto s = stream.str();
+
+        p.body_length(s.length());
+        std::memcpy(p.body(), s.c_str(), p.body_length());
+        p.encode_header();
+
+        return p;
+    }
+
 private:
     char data_[PACKET_HEADER_LENGTH + PACKET_BODY_LENGTH];
     std::size_t body_length_;

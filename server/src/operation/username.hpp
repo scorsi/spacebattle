@@ -28,7 +28,7 @@ std::unique_ptr<network::packet> handle_send(std::shared_ptr<network::session> s
 
 std::unique_ptr<network::packet> handle_receive(std::shared_ptr<network::session> session,
                                                 const network::message &msg,
-                                                cereal::BinaryInputArchive &ar);
+                                                cereal::BinaryInputArchive &archive);
 
 }
 }
