@@ -17,31 +17,31 @@ public:
               data_("") {
     }
 
-    const char *data() const {
+    const char *get_data() const {
         return data_;
     }
 
-    char *data() {
+    char *get_data() {
         return data_;
     }
 
-    std::size_t length() const {
+    std::size_t get_length() const {
         return PACKET_HEADER_LENGTH + body_length_;
     }
 
-    const char *body() const {
+    const char *get_body() const {
         return data_ + PACKET_HEADER_LENGTH;
     }
 
-    char *body() {
+    char *get_body() {
         return data_ + PACKET_HEADER_LENGTH;
     }
 
-    std::size_t body_length() const {
+    std::size_t get_body_length() const {
         return body_length_;
     }
 
-    void body_length(std::size_t new_length) {
+    void set_body_length(std::size_t new_length) {
         body_length_ = new_length;
     }
 
@@ -69,8 +69,8 @@ public:
         network::packet p;
         auto s = stream.str();
 
-        p.body_length(s.length());
-        std::memcpy(p.body(), s.c_str(), p.body_length());
+        p.set_body_length(s.length());
+        std::memcpy(p.get_body(), s.c_str(), p.get_body_length());
         p.encode_header();
 
         return p;

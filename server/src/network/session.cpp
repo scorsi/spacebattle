@@ -27,12 +27,12 @@ void session::do_read() {
     auto self(shared_from_this());
     asio::async_read(
             socket_,
-            asio::buffer(read_msg_.data(), PACKET_HEADER_LENGTH),
+            asio::buffer(read_msg_.get_data(), PACKET_HEADER_LENGTH),
             [this, self](std::error_code ec, std::size_t /* length */) {
                 if (!ec && read_msg_.decode_header()) {
                     asio::async_read(
                             socket_,
-                            asio::buffer(read_msg_.body(), read_msg_.body_length()),
+                            asio::buffer(read_msg_.get_body(), read_msg_.get_body_length()),
                             [this, self](std::error_code ec, std::size_t /* length */) {
                                 if (!ec) {
                                     packet_handler::do_handle(shared_from_this(), read_msg_);
@@ -61,8 +61,8 @@ void session::do_write() {
     auto self(shared_from_this());
     asio::async_write(
             socket_,
-            asio::buffer(write_msgs_.front().data(),
-                         write_msgs_.front().length()),
+            asio::buffer(write_msgs_.front().get_data(),
+                         write_msgs_.front().get_length()),
             [this, self](std::error_code ec, std::size_t length) {
                 if (!ec) {
                     write_msgs_.pop_front();

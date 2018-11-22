@@ -19,7 +19,7 @@ std::unique_ptr<network::packet> dispatch(std::shared_ptr<network::session> sess
 
 void do_handle(std::shared_ptr<network::session> session,
                const network::packet &packet) {
-    std::istringstream ss(std::string(packet.body(), packet.body_length()));
+    std::istringstream ss(std::string(packet.get_body(), packet.get_body_length()));
 
     cereal::BinaryInputArchive ar(ss);
     network::message msg;
