@@ -1,20 +1,20 @@
 #pragma once
 
 #include <memory>
-#include "session_context.hpp"
 #include "state.hpp"
 #include "event.hpp"
+#include "network/packet.hpp"
+
+namespace network {
+class session;
+}
 
 namespace dispatcher {
 
 bool dispatch_send(const event &event,
-                   std::shared_ptr<session_context> session_context,
-                   std::stringstream &in_stream,
-                   std::stringstream &out_stream);
+                   const std::shared_ptr<network::session> &session);
 
-bool dispatch_receive(const event &event,
-                      std::shared_ptr<session_context> session_context,
-                      std::stringstream &in_stream,
-                      std::stringstream &out_stream);
+bool dispatch_receive(const network::packet &packet,
+                      const std::shared_ptr<network::session> &session);
 
 }

@@ -9,11 +9,13 @@ namespace dispatchers {
 namespace authentication {
 namespace ask_username {
 
-bool dispatch_send(std::shared_ptr<session_context> session_context,
-                   std::stringstream &in,
-                   std::stringstream &out) {
-    cereal::BinaryOutputArchive archive(out);
-    archive(network::message{event::ask_username, true});
+bool dispatch_send(const std::shared_ptr<network::session> &session) {
+    std::stringstream ss;
+    {
+        cereal::BinaryOutputArchive archive(ss);
+        archive(network::message{event::ask_username, true});
+    }
+    session->deliver(network::packet::create_from_stream(ss));
     return true;
 }
 

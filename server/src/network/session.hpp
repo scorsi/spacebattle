@@ -23,8 +23,6 @@ public:
 private:
     void do_read();
 
-    void post_read();
-
     void do_write();
 
     asio::ip::tcp::socket socket_;

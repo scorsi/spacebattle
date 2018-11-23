@@ -1,6 +1,7 @@
 #include "server_context.hpp"
 
 #include <iostream>
+#include "dispatcher.hpp"
 
 server_context::server_context() {
 }
@@ -8,6 +9,7 @@ server_context::server_context() {
 void server_context::add_session(std::shared_ptr<network::session> session) {
     std::cout << "Adding session...";
     session_list_.push_back(session);
+    dispatcher::dispatch_send(event::ask_username, session);
     std::cout << " done." << std::endl;
 }
 

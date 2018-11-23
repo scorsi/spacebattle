@@ -1,17 +1,15 @@
 #pragma once
 
 #include <memory>
+#include "network/session.hpp"
 #include "event.hpp"
 #include "state.hpp"
-#include "session_context.hpp"
 
 namespace dispatchers {
 namespace authentication {
 namespace set_username {
 
-bool dispatch_receive(std::shared_ptr<session_context> session_context,
-                      std::stringstream &in,
-                      std::stringstream &out);
+bool dispatch_receive(const std::shared_ptr<network::session> &, std::stringstream &);
 
 }
 }

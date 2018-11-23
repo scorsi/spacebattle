@@ -3,16 +3,16 @@
 #include <map>
 #include <functional>
 #include <stdexcept>
+#include "network/session.hpp"
+#include "network/message.hpp"
 #include "dispatchers/authentication__ask_username.hpp"
 #include "dispatchers/authentication__set_username.hpp"
 
 namespace dispatcher {
 
-using dispatcher_send_function_type = bool(std::shared_ptr<session_context>,
-                                           std::stringstream &, std::stringstream &);
+using dispatcher_send_function_type = bool(const std::shared_ptr<network::session> &);
 
-using dispatcher_receive_function_type = bool(std::shared_ptr<session_context>,
-                                              std::stringstream &, std::stringstream &);
+using dispatcher_receive_function_type = bool(const std::shared_ptr<network::session> &, std::stringstream &);
 
 struct dispatcher_struct {
     std::function<dispatcher_send_function_type> dispatch_send;
@@ -49,25 +49,35 @@ bool find_dispatcher_and_run(const state &state,
 }
 
 bool dispatch_send(const event &event,
-                   std::shared_ptr<session_context> session_context,
-                   std::stringstream &in_stream,
-                   std::stringstream &out_stream) {
+                   const std::shared_ptr<network::session> &session) {
     return find_dispatcher_and_run(
-            session_context->get_state(), event,
+            session->get_context()->get_state(), event,
             [&](const dispatcher_struct &e) {
-                if (e.dispatch_send != nullptr) return e.dispatch_send(session_context, in_stream, out_stream);
+                if (e.dispatch_send != nullptr) return e.dispatch_send(session);
                 else return false;
             });
 }
 
-bool dispatch_receive(const event &event,
-                      std::shared_ptr<session_context> session_context,
-                      std::stringstream &in_stream,
-                      std::stringstream &out_stream) {
+bool dispatch_receive(const network::packet &packet,
+                      const std::shared_ptr<network::session> &session) {
+    network::message message;
+    {
+        std::stringstream ss(std::string(packet.get_body(), sizeof(network::message)));
+        cereal::BinaryInputArchive ar(ss);
+        ar(message);
+    }
+
+    std::stringstream payload;
+
+    if (packet.get_body_length() - sizeof(network::message) > 0) {
+        payload.write(packet.get_body() + sizeof(network::message),
+                      packet.get_body_length() - sizeof(network::message));
+    }
+
     return find_dispatcher_and_run(
-            session_context->get_state(), event,
+            session->get_context()->get_state(), message.type,
             [&](const dispatcher_struct &e) {
-                if (e.dispatch_receive != nullptr) return e.dispatch_receive(session_context, in_stream, out_stream);
+                if (e.dispatch_receive != nullptr) return e.dispatch_receive(session, payload);
                 else return false;
             });
 }

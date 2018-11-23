@@ -26,29 +26,6 @@ void session::deliver(const network::packet &packet) {
     }
 }
 
-void session::post_read() {
-    network::message msg;
-    {
-        std::stringstream ss(std::string(read_packet_.get_body(), sizeof(network::message)));
-        cereal::BinaryInputArchive ar(ss);
-        ar(msg);
-    }
-
-    std::stringstream in_stream;
-    std::stringstream out_stream;
-
-    if (read_packet_.get_body_length() - sizeof(network::message) > 0) {
-        in_stream.write(read_packet_.get_body() + sizeof(network::message),
-                        read_packet_.get_body_length() - sizeof(network::message));
-    }
-
-    dispatcher::dispatch_receive(msg.type, context_, in_stream, out_stream);
-
-    if (out_stream.str().length() > 0) {
-        deliver(packet::create_from_stream(out_stream));
-    }
-}
-
 void session::do_read() {
     auto self(shared_from_this());
     asio::async_read(
@@ -61,7 +38,7 @@ void session::do_read() {
                             asio::buffer(read_packet_.get_body(), read_packet_.get_body_length()),
                             [this, self](std::error_code ec, std::size_t /* length */) {
                                 if (!ec) {
-                                    post_read();
+                                    dispatcher::dispatch_receive(read_packet_, self);
                                     do_read();
                                 } else if ((asio::error::eof == ec) ||
                                            (asio::error::connection_reset == ec)) {
