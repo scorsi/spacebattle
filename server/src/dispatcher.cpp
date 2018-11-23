@@ -3,6 +3,7 @@
 #include <map>
 #include <functional>
 #include <stdexcept>
+#include "helpers/serialization.hpp"
 #include "network/session.hpp"
 #include "network/message.hpp"
 #include "dispatchers/authentication__ask_username.hpp"
@@ -63,8 +64,7 @@ bool dispatch_receive(const network::packet &packet,
     network::message message;
     {
         std::stringstream ss(std::string(packet.get_body(), sizeof(network::message)));
-        cereal::BinaryInputArchive ar(ss);
-        ar(message);
+        helpers::serialization::load(message, ss);
     }
 
     std::stringstream payload;

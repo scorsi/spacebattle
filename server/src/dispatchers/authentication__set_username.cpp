@@ -1,21 +1,24 @@
 #include "authentication__ask_username.hpp"
 
-#include <cereal/archives/binary.hpp>
 #include "network/message.hpp"
-#include "events/ask_username.hpp"
+#include "events/set_username.hpp"
 #include "event.hpp"
+#include "helpers/serialization.hpp"
 
 namespace dispatchers {
 namespace authentication {
 namespace set_username {
 
 bool dispatch_receive(const std::shared_ptr<network::session> &session, std::stringstream &payload) {
+    events::set_username event;
+    helpers::serialization::load(event, payload);
+
+    session->get_context()->set_username(event.username);
+
     std::stringstream ss;
-    {
-        cereal::BinaryOutputArchive archive(ss);
-        archive(network::message{event::set_username, true});
-    }
+    helpers::serialization::save(network::message{event::set_username, true}, ss);
     session->deliver(network::packet::create_from_stream(ss));
+
     return true;
 }
 
