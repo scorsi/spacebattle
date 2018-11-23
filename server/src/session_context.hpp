@@ -4,7 +4,7 @@
 #include <string>
 #include "state.hpp"
 
-class session_context : public std::enable_shared_from_this<session_context> {
+class session_context {
 public:
     session_context();
 
