@@ -14,40 +14,36 @@ class packet {
 public:
     packet()
             : body_length_(0),
-              data_("") {
+              header_(""),
+              body_("") {
     }
 
-    const char *data() const {
-        return data_;
+    const char *get_header() const {
+        return header_;
     }
 
-    char *data() {
-        return data_;
+    char *get_header() {
+        return header_;
     }
 
-    std::size_t length() const {
-        return PACKET_HEADER_LENGTH + body_length_;
+    const char *get_body() const {
+        return body_;
     }
 
-    const char *body() const {
-        return data_ + PACKET_HEADER_LENGTH;
+    char *get_body() {
+        return body_;
     }
 
-    char *body() {
-        return data_ + PACKET_HEADER_LENGTH;
-    }
-
-    std::size_t body_length() const {
+    std::size_t get_body_length() const {
         return body_length_;
     }
 
-    void body_length(std::size_t new_length) {
+    void set_body_length(std::size_t new_length) {
         body_length_ = new_length;
     }
 
     bool decode_header() {
-        char header[PACKET_HEADER_LENGTH + 1] = "";
-        std::istringstream ss(std::string(data_, PACKET_HEADER_LENGTH));
+        std::istringstream ss(std::string(header_, PACKET_HEADER_LENGTH));
         cereal::BinaryInputArchive archive(ss);
         std::size_t length;
         archive(length);
@@ -56,17 +52,44 @@ public:
     }
 
     void encode_header() {
-        char header[PACKET_HEADER_LENGTH + 1] = "";
         std::ostringstream ss;
         {
             cereal::BinaryOutputArchive archive(ss);
             archive(body_length_);
         }
-        std::memcpy(data_, ss.str().c_str(), PACKET_HEADER_LENGTH);
+        std::memcpy(header_, ss.str().c_str(), PACKET_HEADER_LENGTH);
+    }
+
+    std::vector<char> create_full_packet() {
+        auto full_packet = std::vector<char>(get_full_packet_length());
+        for (int i = 0; i < PACKET_HEADER_LENGTH; i++) {
+            full_packet[i] = header_[i];
+        }
+        for (int i = 0; i < body_length_; i++) {
+            full_packet[PACKET_HEADER_LENGTH + i] = body_[i];
+        }
+
+        return full_packet;
+    }
+
+    std::size_t get_full_packet_length() {
+        return PACKET_HEADER_LENGTH + body_length_;
+    }
+
+    static packet create_from_stream(const std::stringstream &stream) {
+        network::packet p;
+        auto s = stream.str();
+
+        p.set_body_length(s.length());
+        std::memcpy(p.get_body(), s.c_str(), p.get_body_length());
+        p.encode_header();
+
+        return p;
     }
 
 private:
-    char data_[PACKET_HEADER_LENGTH + PACKET_BODY_LENGTH];
+    char header_[PACKET_HEADER_LENGTH];
+    char body_[PACKET_BODY_LENGTH];
     std::size_t body_length_;
 };
 
