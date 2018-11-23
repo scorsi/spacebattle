@@ -1,9 +1,7 @@
 #pragma once
 
 #include <list>
-#include "session.hpp"
-
-namespace network {
+#include "network/session.hpp"
 
 class server_context {
 public:
@@ -18,5 +16,3 @@ public:
 private:
     std::list<std::shared_ptr<network::session>> session_list_;
 };
-
-}

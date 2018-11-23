@@ -2,12 +2,15 @@
 
 #include <memory>
 #include <string>
-
-namespace network {
+#include "state.hpp"
 
 class session_context : public std::enable_shared_from_this<session_context> {
 public:
     session_context();
+
+    const state &get_state() const;
+
+    void set_state(const state &new_state);
 
     const std::string &get_username() const;
 
@@ -15,6 +18,5 @@ public:
 
 private:
     std::string username_;
+    state state_;
 };
-
-}

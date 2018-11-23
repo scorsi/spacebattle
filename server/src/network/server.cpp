@@ -9,7 +9,7 @@ server::server(asio::io_service &io_service,
                const asio::ip::tcp::endpoint &endpoint)
         : acceptor_(io_service, endpoint),
           socket_(io_service) {
-    context_ = std::make_shared<network::server_context>();
+    context_ = std::make_shared<server_context>();
     do_accept();
 }
 

@@ -2,17 +2,17 @@
 
 #include <cstdint>
 #include <cereal/archives/binary.hpp>
+#include "event.hpp"
 
 namespace network {
 
 struct message {
-    int type;
-    int id;
+    event type;
     bool status;
 
     template<class Archive>
     void serialize(Archive &ar) {
-        ar(type, id, status);
+        ar(type, status);
     }
 };
 

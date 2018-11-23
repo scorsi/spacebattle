@@ -17,13 +17,16 @@ include_directories(src)
 
 add_executable(spacebattle_server
         src/main.cpp
-        
-        src/network/server.cpp
-        src/network/server_context.cpp
-        src/network/session.cpp
-        src/network/session_context.cpp
-        src/network/packet_handler.cpp
 
-        src/operation/username.cpp )
+        src/network/server.cpp
+        src/server_context.cpp
+        src/network/session.cpp
+        src/session_context.cpp
+
+        src/dispatcher.cpp
+
+        src/dispatchers/authentication__ask_username.cpp
+        src/dispatchers/authentication__set_username.cpp
+        )
 
 target_link_libraries(spacebattle_server ${CONAN_LIBS})

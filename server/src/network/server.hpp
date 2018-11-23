@@ -14,7 +14,7 @@ private:
 
     asio::ip::tcp::acceptor acceptor_;
     asio::ip::tcp::socket socket_;
-    std::shared_ptr<network::server_context> context_;
+    std::shared_ptr<server_context> context_;
 };
 
 }

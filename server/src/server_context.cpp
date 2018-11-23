@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-namespace network {
-
 server_context::server_context() {
 }
 
@@ -33,6 +31,4 @@ void server_context::broadcast(const network::packet &packet) {
                   [&packet](std::shared_ptr<network::session> &session) {
                       session->deliver(packet);
                   });
-}
-
 }
