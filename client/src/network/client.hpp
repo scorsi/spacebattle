@@ -3,6 +3,7 @@
 #include <deque>
 #include <asio.hpp>
 #include "packet.hpp"
+#include "context.hpp"
 
 namespace network {
 
@@ -15,6 +16,8 @@ public:
 
     void close();
 
+    std::shared_ptr<context> get_context() const;
+
 private:
     void do_connect(asio::ip::tcp::resolver::iterator endpoint_iterator);
 
@@ -26,6 +29,7 @@ private:
     asio::ip::tcp::socket socket_;
     network::packet read_packet_;
     std::deque<network::packet> write_packets_;
+    std::shared_ptr<context> context_;
 };
 
 }

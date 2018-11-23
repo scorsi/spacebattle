@@ -4,7 +4,8 @@ namespace network {
 
 client::client(asio::io_service &io_service, asio::ip::tcp::resolver::iterator endpoint_iterator)
         : io_service_(io_service),
-          socket_(io_service) {
+          socket_(io_service),
+          context_() {
     do_connect(std::move(endpoint_iterator));
 }
 
@@ -81,6 +82,10 @@ void client::do_write() {
                     close();
                 }
             });
+}
+
+std::shared_ptr<context> client::get_context() const {
+    return context_;
 }
 
 }
