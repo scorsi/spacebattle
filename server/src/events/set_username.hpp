@@ -8,7 +8,7 @@ namespace events {
 struct set_username {
     std::string username;
 
-    void save(cereal::BinaryOutputArchive &archive) {
+    void save(cereal::BinaryOutputArchive &archive) const {
         serialize::save_string(archive, username);
     }
 

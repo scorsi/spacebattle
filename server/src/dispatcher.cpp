@@ -51,35 +51,44 @@ bool find_dispatcher_and_run(const state &state,
 
 bool dispatch_send(const event &event,
                    const std::shared_ptr<network::session> &session) {
-    return find_dispatcher_and_run(
+
+    std::cout << "Event sent: " << event << ", dispatching status: ";
+
+    auto b = find_dispatcher_and_run(
             session->get_context()->get_state(), event,
             [&](const dispatcher_struct &e) {
                 if (e.dispatch_send != nullptr) return e.dispatch_send(session);
                 else return false;
             });
+    std::cout << b << "." << std::endl;
+    return b;
 }
 
 bool dispatch_receive(const network::packet &packet,
                       const std::shared_ptr<network::session> &session) {
     network::message message;
     {
-        std::stringstream ss(std::string(packet.get_body(), sizeof(network::message)));
+        std::stringstream ss(std::string(packet.get_body(), MESSAGE_LENGTH));
         helpers::serialization::load(message, ss);
     }
 
+    std::cout << "Event received: " << message.type << ", dispatching status: ";
+
     std::stringstream payload;
 
-    if (packet.get_body_length() - sizeof(network::message) > 0) {
-        payload.write(packet.get_body() + sizeof(network::message),
-                      packet.get_body_length() - sizeof(network::message));
+    if (packet.get_body_length() - MESSAGE_LENGTH > 0) {
+        payload.write(packet.get_body() + MESSAGE_LENGTH,
+                      packet.get_body_length() - MESSAGE_LENGTH);
     }
 
-    return find_dispatcher_and_run(
+    auto b = find_dispatcher_and_run(
             session->get_context()->get_state(), message.type,
             [&](const dispatcher_struct &e) {
                 if (e.dispatch_receive != nullptr) return e.dispatch_receive(session, payload);
                 else return false;
             });
+    std::cout << b << "." << std::endl;
+    return b;
 }
 
 }

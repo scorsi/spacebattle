@@ -9,16 +9,8 @@ namespace dispatchers {
 namespace authentication {
 namespace set_username {
 
-bool dispatch_receive(const std::shared_ptr<network::client> &client, std::stringstream &payload) {
-    events::set_username event;
-    helpers::serialization::load(event, payload);
-
-    //session->get_context()->set_username(event.username);
-
-    std::stringstream ss;
-    helpers::serialization::save(network::message{event::set_username, true}, ss);
-    client->deliver(network::packet::create_from_stream(ss));
-
+bool dispatch_receive(network::client &client, std::stringstream &payload) {
+    client.get_context().set_state(state::in_menu);
     return true;
 }
 

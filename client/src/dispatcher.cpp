@@ -11,9 +11,9 @@
 
 namespace dispatcher {
 
-using dispatcher_send_function_type = bool(const std::shared_ptr<network::client> &);
+using dispatcher_send_function_type = bool(network::client &);
 
-using dispatcher_receive_function_type = bool(const std::shared_ptr<network::client> &, std::stringstream &);
+using dispatcher_receive_function_type = bool(network::client &, std::stringstream &);
 
 struct dispatcher_struct {
     std::function<dispatcher_send_function_type> dispatch_send;
@@ -50,36 +50,45 @@ bool find_dispatcher_and_run(const state &state,
 }
 
 bool dispatch_send(const event &event,
-                   const std::shared_ptr<network::client> &client) {
-    return find_dispatcher_and_run(
-            client->get_context()->get_state(), event,
+                   network::client &client) {
+
+    std::cout << "Event sent: " << event << ", dispatching status: ";
+
+    auto b = find_dispatcher_and_run(
+            client.get_context().get_state(), event,
             [&](const dispatcher_struct &e) {
                 if (e.dispatch_send != nullptr) return e.dispatch_send(client);
                 else return false;
             });
+    std::cout << b << "." << std::endl;
+    return b;
 }
 
 bool dispatch_receive(const network::packet &packet,
-                      const std::shared_ptr<network::client> &client) {
+                      network::client &client) {
     network::message message;
     {
-        std::stringstream ss(std::string(packet.get_body(), sizeof(network::message)));
+        std::stringstream ss(std::string(packet.get_body(), MESSAGE_LENGTH));
         helpers::serialization::load(message, ss);
     }
 
+    std::cout << "Event received: " << message.type << ", dispatching status: ";
+
     std::stringstream payload;
 
-    if (packet.get_body_length() - sizeof(network::message) > 0) {
-        payload.write(packet.get_body() + sizeof(network::message),
-                      packet.get_body_length() - sizeof(network::message));
+    if (packet.get_body_length() - MESSAGE_LENGTH > 0) {
+        payload.write(packet.get_body() + MESSAGE_LENGTH,
+                      packet.get_body_length() - MESSAGE_LENGTH);
     }
 
-    return find_dispatcher_and_run(
-            client->get_context()->get_state(), message.type,
+    auto b = find_dispatcher_and_run(
+            client.get_context().get_state(), message.type,
             [&](const dispatcher_struct &e) {
                 if (e.dispatch_receive != nullptr) return e.dispatch_receive(client, payload);
                 else return false;
             });
+    std::cout << b << "." << std::endl;
+    return b;
 }
 
 }

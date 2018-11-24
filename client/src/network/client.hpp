@@ -7,7 +7,8 @@
 
 namespace network {
 
-class client {
+class client
+        : public std::enable_shared_from_this<client> {
 public:
     client(asio::io_service &io_service,
            asio::ip::tcp::resolver::iterator endpoint_iterator);
@@ -16,7 +17,7 @@ public:
 
     void close();
 
-    std::shared_ptr<context> get_context() const;
+    context &get_context();
 
 private:
     void do_connect(asio::ip::tcp::resolver::iterator endpoint_iterator);
@@ -29,7 +30,7 @@ private:
     asio::ip::tcp::socket socket_;
     network::packet read_packet_;
     std::deque<network::packet> write_packets_;
-    std::shared_ptr<context> context_;
+    context context_;
 };
 
 }

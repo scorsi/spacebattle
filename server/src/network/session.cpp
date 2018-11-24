@@ -9,7 +9,8 @@ namespace network {
 
 session::session(asio::ip::tcp::socket socket, const std::shared_ptr<server_context> &server_context)
         : socket_(std::move(socket)),
-          server_context_(server_context) {
+          server_context_(server_context),
+          write_packets_() {
     context_ = std::make_shared<session_context>();
 }
 
@@ -27,6 +28,7 @@ void session::deliver(const network::packet &packet) {
 }
 
 void session::do_read() {
+    std::cout << "Reading..." << std::endl;
     auto self(shared_from_this());
     asio::async_read(
             socket_,
@@ -38,6 +40,7 @@ void session::do_read() {
                             asio::buffer(read_packet_.get_body(), read_packet_.get_body_length()),
                             [this, self](std::error_code ec, std::size_t /* length */) {
                                 if (!ec) {
+                                    std::cout << "Successfully read packet" << std::endl;
                                     dispatcher::dispatch_receive(read_packet_, self);
                                     do_read();
                                 } else if ((asio::error::eof == ec) ||
@@ -45,7 +48,7 @@ void session::do_read() {
                                     server_context_->remove_session(shared_from_this());
                                     return;
                                 } else {
-                                    // DO SOMETHING
+                                    std::cout << "Got error while reading: " << ec << std::endl;
                                     return;
                                 }
                             });
@@ -54,26 +57,28 @@ void session::do_read() {
                     server_context_->remove_session(shared_from_this());
                     return;
                 } else {
-                    // DO SOMETHING
+                    std::cout << "Got error while reading: " << ec << std::endl;
                     return;
                 }
             });
 }
 
 void session::do_write() {
+    std::cout << "Writing..." << std::endl;
     auto self(shared_from_this());
     asio::async_write(
             socket_,
-            asio::buffer(write_packets_.front().create_full_packet(),
+            asio::buffer(&write_packets_.front().create_full_packet()[0],
                          write_packets_.front().get_full_packet_length()),
             [this, self](std::error_code ec, std::size_t length) {
                 if (!ec) {
+                    std::cout << "Successfully write packet" << std::endl;
                     write_packets_.pop_front();
                     if (!write_packets_.empty()) {
                         do_write();
                     }
                 } else {
-                    // DO SOMETHING
+                    std::cout << "Got error while writing: " << ec << std::endl;
                 }
             });
 }

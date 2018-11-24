@@ -6,6 +6,8 @@
 
 namespace network {
 
+#define MESSAGE_LENGTH (sizeof(std::int32_t) + sizeof(bool))
+
 struct message {
     event type;
     bool status;

@@ -9,7 +9,7 @@ namespace dispatchers {
 namespace authentication {
 namespace ask_username {
 
-bool dispatch_receive(const std::shared_ptr<network::client> &client, std::stringstream &payload);
+bool dispatch_receive(network::client &client, std::stringstream &payload);
 
 }
 }

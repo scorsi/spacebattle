@@ -12,9 +12,9 @@ class client;
 namespace dispatcher {
 
 bool dispatch_send(const event &event,
-                   const std::shared_ptr<network::client> &client);
+                   network::client &client);
 
 bool dispatch_receive(const network::packet &packet,
-                      const std::shared_ptr<network::client> &client);
+                      network::client &client);
 
 }
