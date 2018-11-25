@@ -18,7 +18,9 @@ public:
 
     void deliver(const network::packet &packet);
 
-    std::shared_ptr<session_context> get_context();
+    std::shared_ptr<session_context> get_context() const;
+
+    std::shared_ptr<server_context> get_server_context() const;
 
 private:
     void do_read();
