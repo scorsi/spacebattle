@@ -83,8 +83,12 @@ void session::do_write() {
             });
 }
 
-std::shared_ptr<session_context> session::get_context() {
+std::shared_ptr<session_context> session::get_context() const {
     return context_;
+}
+
+std::shared_ptr<server_context> session::get_server_context() const {
+    return server_context_;
 }
 
 }
