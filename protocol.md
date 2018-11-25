@@ -6,7 +6,7 @@ The protocol of the SpaceBattle game.
 
 ### Packet
 
-A packet is formatted as follow: `<length:int><message:message>`.
+A packet is formatted as follow: `<length:int64><message:message>`.
 
 - `length` : The length in bytes of the following message.
 
@@ -14,39 +14,47 @@ A packet is formatted as follow: `<length:int><message:message>`.
 
 ### **Message**
 
-A message is formatted as follow: `<op:int><id:int><status:int><payload:any>?`.
+A message is formatted as follow: `<op:int32><status:bool><payload:any>?`.
 
 - `op` : The operation id.
 
-- `id` : The communication response id.
-
-- `status` : The status of the message, should **OK** `1` or **ERROR** `0`.
+- `status` : The status of the message, should **OK** `true` or **ERROR** `false`.
 
 - `payload` : The payload of the message, can be null / empty depending of the `op` and the `id` of the message.
 
+The `payload` is either the `op` payload if the `status` is **OK** or a _error_ payload if the status is **ERROR**. 
+
 ### Array
 
-A array is formatted as follow: `<length:int>[<elem:T>]` where `T` is the type of the array.
+A array is formatted as follow: `<length:int64>[<elem:T>]` where `T` is the type of the array.
 
 - `length` : The number of element `T`.
 
 - `elem` : An element of type `T`. 
 
+### **Error**
+
+An error is formatted like an `Array` of type `int16`, so fomatted as: `<length:int64>[<error-type:int16>]`.
+
+- `length` : The number of errors.
+
+- `error-type` : The _error id_ depending of the _message op id_.
+
 ### String
 
-A string is formatted like an `Array` of type `char`, so formatted as: `<length:int>[<elem:char>]`.
+A string is formatted like an `Array` of type `char`, so formatted as: `<length:int64>[<elem:char>]`.
 
 ### Player
 
-A player is formatted as follow: `<id:int><name:string>`.
+A player is formatted as follow: `<id:int64><name:string>`.
 
 - `id` : The id of the player.
 
-- `name` : The name of the player.
+- `name` : The username of the player.
 
 ### Room
 
-A room is formatted as follow: `<id:int><name:string><status:int><game-type:int>[<players:player>]`.
+A room is formatted as follow: `<id:int64><name:string><status:int16><game-type:int16>`.
 
 - `id` : The id of the room.
 
@@ -68,234 +76,218 @@ A room is formatted as follow: `<id:int><name:string><status:int><game-type:int>
 
   - **CLASSIC** `1`
 
-- `players` : The connected players.
-
 ## Operations
 
-### `100` **USERNAME** : _Allow the server to ask and the client to set its username_.
+### `0101` **ask_username** (server → client)
+
+Only sent by the server to the client, it allow the server to ask the client username.
+
+#### Payload
+
+##### Server
+
+No payload.
 
 #### Errors
 
-##### Server errors
+##### Server
 
-- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+- `01` **unexpected_message** : The server doesn't expect this message from the client
 
-- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+##### Client
 
-- `10` **USERNAME__ALREADY_TAKEN** : The given username by the client was already been taken
+No available error
 
-- `11` **USERNAME_INVALID** : The given username by the client is invalid
+### `0102` **set_username** (client → server → client)
 
-##### Client errors
+Sent by the client after the `ask_username` command sent by the server, it allow the client to set its username.
 
-- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+The server should respond with the status `OK` if everything is good. If the status code is `ERROR`, the client must send another valid username until the status is `OK`.
 
-- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+#### Payload
 
-#### Operation communication steps
+##### Client
 
-1. Server : asks username to client
+`<username:string>`
 
-   `USERNAME``0``OK`
+- `username` : The username to set.
 
-2. Client : answers to server with username
+##### Server
 
-   `USERNAME``1``OK``"username"`
-
-3. Server : answers
-
-   - Server accepts the client username
-
-     `USERNAME``2``OK`
-
-   - Server don't accepts the client username
-
-     `USERNAME``2``ERROR``error_message`
-
-4. Client : back to number 2. until server accepts
-
-### `200` **ROOM_FETCH** : _Allow the client to fetch available rooms_.
+No payload.
 
 #### Errors
 
-##### Server errors
+##### Server
 
-- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+- `01` **unexpected_message** : The server doesn't expect this message from the client
 
-- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+- `02` **poorly_formatted_payload** : The client's answer does not respect the payload format
 
-##### Client errors
+- `02` **username_already_taken** : The given username by the client was already been taken
 
-- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+- `03` **invalid_username_** : The given username by the client is invalid
 
-- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+##### Client
 
-#### Operation communication steps
+No available error
 
-1. 
+### `0201` **fetch_rooms** (client → server → client)
 
-2. 
+Sent by the client, it allow the client to get all available rooms.
 
-### `201` **ROOM_CONNECT** : _Allow the client to connect to a room_.
+#### Payload
 
-#### Errors
+##### Client
 
-##### Server errors
+No payload.
 
-- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+_Note: may change in the future._
 
-- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+##### Server
 
-##### Client errors
+`<rooms:array<room>>`
 
-- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+- `rooms` : The list of actual rooms, refer to the `room` data strucure.
 
-- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
-
-#### Operation communication steps
-
-1. 
-
-### `202` **ROOM_DISCONNECT** : _Allow the client to disconnect from its actual room_.
+_Note: may change in the future._
 
 #### Errors
 
-##### Server errors
+##### Server
 
-- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+- `01` **unexpected_message** : The server doesn't expect this message from the client
 
-- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+##### Client
 
-##### Client errors
+No available error
 
-- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+### `0202` **fetch_room_info** (client → server → client)
 
-- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+Sent by the client, it allow to fetch all info in a room as the players.
 
-#### Operation communication steps
+#### Payloads
 
-### `203` **ROOM_READY** : _Allow the server to inform the connected clients of a room that the room is ready to be launched_.
+##### Client
 
-#### Errors
+`<id:int64>`
 
-##### Server errors
+- `id` : The id of the room to fetch info from.
 
-- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+##### Server
 
-- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+`<status:int16><players:array<player>>`
 
-##### Client errors
+- `status` : The actual status of the room, refer to the `room` data strucutre.
 
-- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+- `players` : The connected players to the room.
 
-- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
-
-#### Operation communication steps
-
-### `300` **CLIENT_FETCH** : _Allow the client to fetch information of another client_.
+_Note: may change in the future._
 
 #### Errors
 
-##### Server errors
+##### Server
 
-- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+- `01` **unexpected_message** : The server doesn't expect this message from the client
 
-- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+- `02` **poorly_formatted_payload** : The client's answer does not respect the payload format
 
-##### Client errors
+##### Client
 
-- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+No available error
 
-- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+### `0203` **create_room** (client → server → client)
 
-#### Operation communication steps
+Sent by the client, it allow the client to create a new room.
 
-### `301` **CLIENT_CONNECTED** : _Allow the server to inform connected client of a room that a new client has been connected_.
+#### Payloads
 
-#### Errors
+##### Client
 
-##### Server errors
+`<name:string><game-type:int16>`
 
-- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+- `name` : The name of the room to create.
 
-- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+- `game-type` : The game type of the room.
 
-##### Client errors
+##### Server
 
-- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+`<id:int64>`
 
-- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
-
-#### Operation communication steps
-
-### `302` **CLIENT_DISCONNECTED** : _Allow the server to inform connected client of a room that a client has been disconnected_.
+- `id` : The id of the created room.
 
 #### Errors
 
-##### Server errors
+##### Server
 
-- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+- `01` **unexpected_message** : The server doesn't expect this message from the client
 
-- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+- `02` **poorly_formatted_payload** : The client's answer does not respect the payload format
 
-##### Client errors
+- `03` **room_name_already_taken** : A room with the same name already exists
 
-- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+- `04` **game_type_do_not_exists** : The given game type does not exists
 
-- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+##### Client
 
-#### Operation communication steps
+No available error
 
-### `303` **CLIENT_READY** : _Allow the server to inform connected clients of a room that a cient is now ready or no longer ready_.
+### `0204` **join_room** (client → server → client)
 
-#### Errors
+Sent by the client, it allow the client to join a room thanks to its id.
 
-##### Server errors
+#### Payload
 
-- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+##### Client
 
-- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+`<id:int64>`
 
-##### Client errors
+- `id` : The id of the room to join.
 
-- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+##### Server
 
-- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
-
-#### Operation communication steps
-
-### `400` **GAME_LAUNCHING** : _Allow the server to inform connected clients of a room that the game will launch_.
+No payload.
 
 #### Errors
 
-##### Server errors
+##### Server
 
-- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+- `01` **unexpected_message** : The server doesn't expect this message from the client
 
-- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+- `02` **poorly_formatted_payload** : The client's answer does not respect the payload format
 
-##### Client errors
+- `03` **room_is_full** : The given room is already full
 
-- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+- `04` **room_do_not_exists** : The given romm does not exists
 
-- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+##### Client
 
-#### Operation communication steps
+No available error
 
-### `401` **GAME_STARTED** : _Allow the server to inform connected clients of a game that the game is started_.
+### `0205` **leave_room** (client → server → client)
+
+Sent by the client, it allow the client to leave the actual connected room.
+
+#### Payload
+
+##### Client
+
+No payload.
+
+##### Server
+
+No payload.
 
 #### Errors
 
-##### Server errors
+##### Server
 
-- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+- `01` **unexpected_message** : The server doesn't expect this message from the client
 
-- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
+- `02` **not_connected_to_room** : The client is not connected to any room
 
-##### Client errors
+##### Client
 
-- `00` **UNKNOWN_ANSWER** : The given answer from the server is unknown by the client
+No available error
 
-- `01` **UNEXPECTED_ANSWER** : The given answer from the server is unexpected by the client
 
-#### Operation communication steps
