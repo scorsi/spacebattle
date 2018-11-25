@@ -1,0 +1,278 @@
+[gd_scene load_steps=52 format=2]
+
+[ext_resource path="res://images/menu_background/00.png" type="Texture" id=1]
+[ext_resource path="res://images/menu_background/01.png" type="Texture" id=2]
+[ext_resource path="res://images/menu_background/02.png" type="Texture" id=3]
+[ext_resource path="res://images/menu_background/03.png" type="Texture" id=4]
+[ext_resource path="res://images/menu_background/04.png" type="Texture" id=5]
+[ext_resource path="res://images/menu_background/05.png" type="Texture" id=6]
+[ext_resource path="res://images/menu_background/06.png" type="Texture" id=7]
+[ext_resource path="res://images/menu_background/07.png" type="Texture" id=8]
+[ext_resource path="res://images/menu_background/08.png" type="Texture" id=9]
+[ext_resource path="res://images/menu_background/09.png" type="Texture" id=10]
+[ext_resource path="res://images/menu_background/10.png" type="Texture" id=11]
+[ext_resource path="res://images/menu_background/11.png" type="Texture" id=12]
+[ext_resource path="res://images/menu_background/12.png" type="Texture" id=13]
+[ext_resource path="res://images/menu_background/13.png" type="Texture" id=14]
+[ext_resource path="res://images/menu_background/14.png" type="Texture" id=15]
+[ext_resource path="res://images/menu_background/15.png" type="Texture" id=16]
+[ext_resource path="res://images/menu_background/16.png" type="Texture" id=17]
+[ext_resource path="res://images/menu_background/17.png" type="Texture" id=18]
+[ext_resource path="res://images/menu_background/18.png" type="Texture" id=19]
+[ext_resource path="res://images/menu_background/19.png" type="Texture" id=20]
+[ext_resource path="res://images/menu_background/20.png" type="Texture" id=21]
+[ext_resource path="res://images/menu_background/21.png" type="Texture" id=22]
+[ext_resource path="res://images/menu_background/22.png" type="Texture" id=23]
+[ext_resource path="res://images/menu_background/23.png" type="Texture" id=24]
+[ext_resource path="res://images/menu_background/24.png" type="Texture" id=25]
+[ext_resource path="res://images/menu_background/25.png" type="Texture" id=26]
+[ext_resource path="res://images/menu_background/26.png" type="Texture" id=27]
+[ext_resource path="res://images/menu_background/27.png" type="Texture" id=28]
+[ext_resource path="res://images/menu_background/28.png" type="Texture" id=29]
+[ext_resource path="res://images/menu_background/29.png" type="Texture" id=30]
+[ext_resource path="res://images/menu_background/30.png" type="Texture" id=31]
+[ext_resource path="res://images/menu_background/31.png" type="Texture" id=32]
+[ext_resource path="res://images/menu_background/32.png" type="Texture" id=33]
+[ext_resource path="res://images/loader/00.png" type="Texture" id=34]
+[ext_resource path="res://images/loader/01.png" type="Texture" id=35]
+[ext_resource path="res://images/loader/02.png" type="Texture" id=36]
+[ext_resource path="res://images/loader/03.png" type="Texture" id=37]
+[ext_resource path="res://images/loader/04.png" type="Texture" id=38]
+[ext_resource path="res://images/loader/05.png" type="Texture" id=39]
+[ext_resource path="res://images/loader/06.png" type="Texture" id=40]
+[ext_resource path="res://images/loader/07.png" type="Texture" id=41]
+[ext_resource path="res://images/loader/08.png" type="Texture" id=42]
+[ext_resource path="res://images/loader/09.png" type="Texture" id=43]
+[ext_resource path="res://images/loader/10.png" type="Texture" id=44]
+[ext_resource path="res://images/loader/11.png" type="Texture" id=45]
+[ext_resource path="res://images/loader/12.png" type="Texture" id=46]
+[ext_resource path="res://images/loader/13.png" type="Texture" id=47]
+[ext_resource path="res://images/loader/14.png" type="Texture" id=48]
+[ext_resource path="res://images/loader/15.png" type="Texture" id=49]
+
+[sub_resource type="SpriteFrames" id=1]
+
+animations = [ {
+"frames": [ ExtResource( 1 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 28 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 31 ), ExtResource( 32 ), ExtResource( 33 ) ],
+"loop": true,
+"name": "default",
+"speed": 10.0
+} ]
+
+[sub_resource type="SpriteFrames" id=2]
+
+animations = [ {
+"frames": [ ExtResource( 34 ), ExtResource( 35 ), ExtResource( 36 ), ExtResource( 37 ), ExtResource( 38 ), ExtResource( 39 ), ExtResource( 40 ), ExtResource( 41 ), ExtResource( 42 ), ExtResource( 43 ), ExtResource( 44 ), ExtResource( 45 ), ExtResource( 46 ), ExtResource( 47 ), ExtResource( 48 ), ExtResource( 49 ) ],
+"loop": true,
+"name": "default",
+"speed": 7.0
+} ]
+
+[node name="Main" type="Node" index="0"]
+
+[node name="Background" type="AnimatedSprite" parent="." index="0"]
+
+position = Vector2( 512, 300 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 1 )
+animation = "default"
+frame = 11
+playing = true
+_sections_unfolded = [ "Transform", "Z Index" ]
+
+[node name="Title" type="Label" parent="Background" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = -125.0
+margin_top = -120.0
+margin_right = 6.0
+margin_bottom = -106.0
+rect_scale = Vector2( 2, 1.5 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Space Battle Game"
+align = 1
+uppercase = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect" ]
+
+[node name="Container" type="Container" parent="Background" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 40.0
+margin_top = 50.0
+margin_right = 240.0
+margin_bottom = 130.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Material", "Rect", "Visibility" ]
+
+[node name="ip_address_label" type="Label" parent="Background/Container" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 40.0
+margin_bottom = 14.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "IP address:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="ip_address" type="TextEdit" parent="Background/Container/ip_address_label" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 81.0
+margin_top = -5.0
+margin_right = 201.0
+margin_bottom = 19.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = true
+hint_tooltip = "The server ip address"
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+text = ""
+readonly = false
+highlight_current_line = false
+syntax_highlighting = false
+show_line_numbers = false
+highlight_all_occurrences = false
+override_selected_font_color = false
+context_menu_enabled = true
+smooth_scrolling = false
+v_scroll_speed = 80.0
+hiding_enabled = 0
+wrap_lines = false
+caret_block_mode = true
+caret_blink = true
+caret_blink_speed = 0.65
+caret_moving_by_right_click = true
+_sections_unfolded = [ "Grow Direction", "Margin", "Rect" ]
+
+[node name="error" type="Label" parent="Background/Container" index="1"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 25.0
+margin_right = 200.0
+margin_bottom = 55.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Error message"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Button" type="Button" parent="Background/Container" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 60.0
+margin_right = 200.0
+margin_bottom = 80.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Connect"
+flat = false
+align = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="loading" type="Container" parent="Background" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = -100.0
+margin_right = 100.0
+margin_bottom = 30.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="loading_text" type="Label" parent="Background/loading" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 150.0
+margin_bottom = 30.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Error message"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect" ]
+
+[node name="loading_img" type="AnimatedSprite" parent="Background/loading" index="1"]
+
+position = Vector2( 150, 15 )
+scale = Vector2( 0.5, 0.5 )
+frames = SubResource( 2 )
+animation = "default"
+frame = 3
+playing = true
+_sections_unfolded = [ "Transform" ]
+
+
