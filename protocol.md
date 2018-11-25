@@ -290,4 +290,46 @@ No payload.
 
 No available error
 
+### `0302` **player_joined** (server → client)
 
+Sent by the server to each client of a room to inform them a new connected client
+
+#### Payload
+
+##### Server
+
+`<player:player>`
+
+- `player` : The new connected player, see `player` data structure for more information.
+
+#### Errors
+
+##### Server
+
+- `01` **unexpected_message** : The server doesn't expect this message from the client
+
+##### Client
+
+No available error
+
+### `0303` **player_leaved** (server → client)
+
+Sent by the server to each client of a room to inform them a client has leave
+
+#### Payload
+
+##### Server
+
+`<id:int64>`
+
+- `id` : The id of the client who leaved.
+
+#### Errors
+
+##### Server
+
+- `01` **unexpected_message** : The server doesn't expect this message from the client
+
+##### Client
+
+No available error
