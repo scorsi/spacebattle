@@ -6,3 +6,4 @@ project/export_presets.cfg
 project/bin/osx
 project/bin/x11
 project/bin/windows
+src/**/*.os

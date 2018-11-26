@@ -1,0 +1,8 @@
+"/Users/scorsi/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/182.5107.21/CLion.app/Contents/bin/cmake/mac/bin/cmake" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /Users/scorsi/Code/Epitech/spacebattle/client
+-- Current conanbuildinfo.cmake directory: /Users/scorsi/Code/Epitech/spacebattle/client/build
+-- Conan: Using cmake global configuration
+-- Conan: Adjusting default RPATHs Conan policies
+-- Conan: Adjusting language standard
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/scorsi/Code/Epitech/spacebattle/client/build

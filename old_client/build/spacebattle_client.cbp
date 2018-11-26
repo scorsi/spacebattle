@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="spacebattle_client"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\build\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/scorsi/Code/Epitech/spacebattle/client/build"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/scorsi/Code/Epitech/spacebattle/client/build/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/scorsi/Code/Epitech/spacebattle/client/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/scorsi/Code/Epitech/spacebattle/client/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/scorsi/Code/Epitech/spacebattle/client/build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/scorsi/Code/Epitech/spacebattle/client/build"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/scorsi/Code/Epitech/spacebattle/client/build/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/scorsi/Code/Epitech/spacebattle/client/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/scorsi/Code/Epitech/spacebattle/client/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/scorsi/Code/Epitech/spacebattle/client/build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/scorsi/Code/Epitech/spacebattle/client/build"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/scorsi/Code/Epitech/spacebattle/client/build/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/scorsi/Code/Epitech/spacebattle/client/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/scorsi/Code/Epitech/spacebattle/client/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/scorsi/Code/Epitech/spacebattle/client/build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="spacebattle_client">
+				<Option output="/Users/scorsi/Code/Epitech/spacebattle/client/build/bin/spacebattle_client" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/scorsi/Code/Epitech/spacebattle/client/build/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/scorsi/.conan/data/asio/1.12.0/bincrafters/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include"/>
+					<Add directory="/Users/scorsi/.conan/data/sfml/2.5.1/bincrafters/stable/package/8c2020d4f8371b5b86bb8c1e0eaa4bfe98ba978f/include"/>
+					<Add directory="/Users/scorsi/.conan/data/cereal/1.2.2/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include"/>
+					<Add directory="/Users/scorsi/.conan/data/freetype/2.9.0/bincrafters/stable/package/f6fabcb00e881e4d80fffd5893c0c92257ac8d2c/include"/>
+					<Add directory="/Users/scorsi/.conan/data/freetype/2.9.0/bincrafters/stable/package/f6fabcb00e881e4d80fffd5893c0c92257ac8d2c/include/freetype2"/>
+					<Add directory="/Users/scorsi/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include"/>
+					<Add directory="/Users/scorsi/.conan/data/libpng/1.6.34/bincrafters/stable/package/9f67cefb3b597b342ffd9241a4a7dc5a0df50bef/include"/>
+					<Add directory="/Users/scorsi/.conan/data/bzip2/1.0.6/conan/stable/package/534dcc368c999e07e81f146b3466b8f656ef1f55/include"/>
+					<Add directory="/Users/scorsi/.conan/data/zlib/1.2.11/conan/stable/package/534dcc368c999e07e81f146b3466b8f656ef1f55/include"/>
+					<Add directory="/Users/scorsi/Code/Epitech/spacebattle/client/src"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/scorsi/Code/Epitech/spacebattle/client/build/Makefile&quot;  VERBOSE=1 spacebattle_client"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/scorsi/Code/Epitech/spacebattle/client/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/scorsi/Code/Epitech/spacebattle/client/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/scorsi/Code/Epitech/spacebattle/client/build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="spacebattle_client/fast">
+				<Option output="/Users/scorsi/Code/Epitech/spacebattle/client/build/bin/spacebattle_client" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/scorsi/Code/Epitech/spacebattle/client/build/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/scorsi/.conan/data/asio/1.12.0/bincrafters/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include"/>
+					<Add directory="/Users/scorsi/.conan/data/sfml/2.5.1/bincrafters/stable/package/8c2020d4f8371b5b86bb8c1e0eaa4bfe98ba978f/include"/>
+					<Add directory="/Users/scorsi/.conan/data/cereal/1.2.2/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include"/>
+					<Add directory="/Users/scorsi/.conan/data/freetype/2.9.0/bincrafters/stable/package/f6fabcb00e881e4d80fffd5893c0c92257ac8d2c/include"/>
+					<Add directory="/Users/scorsi/.conan/data/freetype/2.9.0/bincrafters/stable/package/f6fabcb00e881e4d80fffd5893c0c92257ac8d2c/include/freetype2"/>
+					<Add directory="/Users/scorsi/.conan/data/stb/20180214/conan/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include"/>
+					<Add directory="/Users/scorsi/.conan/data/libpng/1.6.34/bincrafters/stable/package/9f67cefb3b597b342ffd9241a4a7dc5a0df50bef/include"/>
+					<Add directory="/Users/scorsi/.conan/data/bzip2/1.0.6/conan/stable/package/534dcc368c999e07e81f146b3466b8f656ef1f55/include"/>
+					<Add directory="/Users/scorsi/.conan/data/zlib/1.2.11/conan/stable/package/534dcc368c999e07e81f146b3466b8f656ef1f55/include"/>
+					<Add directory="/Users/scorsi/Code/Epitech/spacebattle/client/src"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/scorsi/Code/Epitech/spacebattle/client/build/Makefile&quot;  VERBOSE=1 spacebattle_client/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/scorsi/Code/Epitech/spacebattle/client/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/scorsi/Code/Epitech/spacebattle/client/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/scorsi/Code/Epitech/spacebattle/client/build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/scorsi/Code/Epitech/spacebattle/client/src/context.cpp">
+			<Option target="spacebattle_client"/>
+		</Unit>
+		<Unit filename="/Users/scorsi/Code/Epitech/spacebattle/client/src/context.hpp">
+			<Option target="spacebattle_client"/>
+		</Unit>
+		<Unit filename="/Users/scorsi/Code/Epitech/spacebattle/client/src/dispatcher.cpp">
+			<Option target="spacebattle_client"/>
+		</Unit>
+		<Unit filename="/Users/scorsi/Code/Epitech/spacebattle/client/src/dispatcher.hpp">
+			<Option target="spacebattle_client"/>
+		</Unit>
+		<Unit filename="/Users/scorsi/Code/Epitech/spacebattle/client/src/dispatchers/authentication__ask_username.cpp">
+			<Option target="spacebattle_client"/>
+		</Unit>
+		<Unit filename="/Users/scorsi/Code/Epitech/spacebattle/client/src/dispatchers/authentication__ask_username.hpp">
+			<Option target="spacebattle_client"/>
+		</Unit>
+		<Unit filename="/Users/scorsi/Code/Epitech/spacebattle/client/src/dispatchers/authentication__set_username.cpp">
+			<Option target="spacebattle_client"/>
+		</Unit>
+		<Unit filename="/Users/scorsi/Code/Epitech/spacebattle/client/src/dispatchers/authentication__set_username.hpp">
+			<Option target="spacebattle_client"/>
+		</Unit>
+		<Unit filename="/Users/scorsi/Code/Epitech/spacebattle/client/src/main.cpp">
+			<Option target="spacebattle_client"/>
+		</Unit>
+		<Unit filename="/Users/scorsi/Code/Epitech/spacebattle/client/src/network/client.cpp">
+			<Option target="spacebattle_client"/>
+		</Unit>
+		<Unit filename="/Users/scorsi/Code/Epitech/spacebattle/client/src/network/client.hpp">
+			<Option target="spacebattle_client"/>
+		</Unit>
+		<Unit filename="/Users/scorsi/Code/Epitech/spacebattle/client/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/Users/scorsi/Code/Epitech/spacebattle/client/build/conanbuildinfo.cmake">
+			<Option virtualFolder="CMake Files\build\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

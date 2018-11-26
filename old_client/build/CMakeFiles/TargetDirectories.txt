@@ -1,0 +1,3 @@
+/Users/scorsi/Code/Epitech/spacebattle/client/build/CMakeFiles/rebuild_cache.dir
+/Users/scorsi/Code/Epitech/spacebattle/client/build/CMakeFiles/edit_cache.dir
+/Users/scorsi/Code/Epitech/spacebattle/client/build/CMakeFiles/spacebattle_client.dir
