@@ -59,5 +59,5 @@ add_sources(sources, "src")
 
 env.MergeFlags(conanflags)
 
-library = env.SharedLibrary(target=final_lib_path + 'libgdexample', source=sources)
+library = env.SharedLibrary(target=final_lib_path + 'libgdclient', source=sources)
 Default(library)
