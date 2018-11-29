@@ -35,3 +35,7 @@ void server_context::broadcast(const network::packet &packet) {
                       session->deliver(packet);
                   });
 }
+
+const std::list<std::shared_ptr<network::session>> &server_context::get_session_list() const {
+    return session_list_;
+}

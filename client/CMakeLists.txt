@@ -1,19 +1,23 @@
 cmake_minimum_required(VERSION 3.5)
 project(spacebattle_client)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
-include_directories(src)
+include_directories(
+        src
+        godot-cpp/include
+        godot_headers
+)
 
 add_executable(spacebattle_client
-        src/main.cpp
+        src/gdlibrary.cpp
+        src/client.cpp
 
         src/context.cpp
-        src/network/client.cpp
-
         src/dispatcher.cpp
+
         src/dispatchers/authentication__ask_username.cpp
         src/dispatchers/authentication__set_username.cpp
         )

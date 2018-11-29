@@ -7,7 +7,7 @@
 
 namespace network {
 
-#define PACKET_HEADER_LENGTH (sizeof(std::size_t))
+#define PACKET_HEADER_LENGTH (sizeof(std::uint32_t))
 #define PACKET_BODY_LENGTH (1024)
 
 class packet {
@@ -34,18 +34,18 @@ public:
         return body_;
     }
 
-    std::size_t get_body_length() const {
+    std::uint32_t get_body_length() const {
         return body_length_;
     }
 
-    void set_body_length(std::size_t new_length) {
+    void set_body_length(std::uint32_t new_length) {
         body_length_ = new_length;
     }
 
     bool decode_header() {
         std::istringstream ss(std::string(header_, PACKET_HEADER_LENGTH));
         cereal::BinaryInputArchive archive(ss);
-        std::size_t length;
+        std::uint32_t length;
         archive(length);
         body_length_ = length;
         return true;
@@ -72,7 +72,7 @@ public:
         return full_packet;
     }
 
-    std::size_t get_full_packet_length() {
+    std::uint32_t get_full_packet_length() {
         return PACKET_HEADER_LENGTH + body_length_;
     }
 
@@ -80,8 +80,8 @@ public:
         network::packet p;
         auto s = stream.str();
 
-        p.set_body_length(s.length());
-        std::memcpy(p.get_body(), s.c_str(), p.get_body_length());
+        p.set_body_length(std::uint32_t(s.length()));
+        std::memcpy(p.get_body(), s.c_str(), std::size_t(p.get_body_length()));
         p.encode_header();
 
         return p;
@@ -90,7 +90,7 @@ public:
 private:
     char header_[PACKET_HEADER_LENGTH];
     char body_[PACKET_BODY_LENGTH];
-    std::size_t body_length_;
+    std::uint32_t body_length_;
 };
 
 }

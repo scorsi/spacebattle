@@ -1,0 +1,8 @@
+[submodule "client/godot-cpp"]
+	path = client/godot-cpp
+	url = https://github.com/GodotNativeTools/godot-cpp
+	branch = 3.0
+[submodule "client/godot_headers"]
+	path = client/godot_headers
+	url = https://github.com/GodotNativeTools/godot_headers
+	branch = 3.0

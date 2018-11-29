@@ -13,6 +13,8 @@ public:
 
     bool remove_session(const std::shared_ptr<network::session> &session);
 
+    const std::list<std::shared_ptr<network::session>> &get_session_list() const;
+
 private:
     std::list<std::shared_ptr<network::session>> session_list_;
 };
