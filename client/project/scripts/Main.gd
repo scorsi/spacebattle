@@ -107,9 +107,7 @@ func join_form__button_pressed():
 		return
 	
 	global.username = username
-	if !global.create_client(ip_address, int(port)):
-		display_error("Can't connect to the server.", "join_form__display")
-		return
+	global.create_client(ip_address, int(port))
 
 
 func join_form__display():
@@ -148,9 +146,8 @@ func create_form__button_pressed():
 		return
 	
 	global.username = username
-	if !global.create_server(int(port)):
-		display_error("Can't create the server.", "create_form__display")
-		return
+	global.create_server(int(port))
+	global.goto_scene("res://scenes/lobby.tscn")
 
 
 func create_form__display():

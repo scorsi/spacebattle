@@ -7,3 +7,4 @@ project/bin/osx
 project/bin/x11
 project/bin/windows
 src/**/*.os
+project/exports

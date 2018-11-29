@@ -1,20 +1,18 @@
 #pragma once
 
 #include <memory>
-#include "network/packet.hpp"
 #include "state.hpp"
 #include "event.hpp"
+#include "message.hpp"
 
-namespace network {
+namespace godot {
 class client;
 }
 
 namespace dispatcher {
 
-bool dispatch_send(const event &event,
-                   network::client &client);
-
-bool dispatch_receive(const network::packet &packet,
-                      network::client &client);
+bool dispatch(const std::string &packet,
+              const message &message,
+              godot::client &client);
 
 }

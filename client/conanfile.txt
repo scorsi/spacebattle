@@ -1,5 +1,4 @@
 [requires]
-asio/1.12.0@bincrafters/stable
 cereal/1.2.2@conan/stable
 
 [generators]

@@ -17,6 +17,11 @@ config/icon="res://images/icon.png"
 [autoload]
 
 global="*res://scripts/global.gd"
+client="*res://bin/client.gdns"
+
+[display]
+
+window/size/width=1000
 
 [gdnative]
 

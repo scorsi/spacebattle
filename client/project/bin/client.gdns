@@ -4,6 +4,6 @@
 
 [resource]
 
-class_name = "gdclass"
+class_name = "client"
 library = ExtResource( 1 )
 

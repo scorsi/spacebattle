@@ -13,9 +13,8 @@ include_directories(
 
 add_executable(spacebattle_client
         src/gdlibrary.cpp
-        src/gdclass.cpp
+        src/client.cpp
 
-        src/network/client.cpp
         src/context.cpp
         src/dispatcher.cpp
 

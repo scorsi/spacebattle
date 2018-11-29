@@ -1,48 +1,40 @@
 extends Node
 
-
 var username = ""
+var current_scene = null
+
+func _ready():
+	var root = get_tree().get_root()
+	current_scene = root.get_child(root.get_child_count() -1)
+	set_process(false)
 
 
-func create_server(server_port):
-	var peer = NetworkedMultiplayerENet.new()
-	peer.create_server(server_port, 10)
-	get_tree().set_network_peer(peer)
-	init_signal()
-	return true
+func goto_scene(path):
+	call_deferred("_deferred_goto_scene", path)
 
 
-func create_client(server_ip, server_port):
-	var peer = NetworkedMultiplayerENet.new()
-	peer.create_client(server_ip, server_port)
-	get_tree().set_network_peer(peer)
-	init_signal()
-	return true
+func _deferred_goto_scene(path):
+	current_scene.free()
+	current_scene = ResourceLoader.load(path).instance()
+	
+	get_tree().get_root().add_child(current_scene)
+	get_tree().set_current_scene(current_scene)
 
 
-func init_signal():
-	get_tree().disconnect("network_peer_connected", self, "_player_connected")
-	get_tree().connect("network_peer_connected", self, "_player_connected")
-	get_tree().disconnect("network_peer_disconnected", self, "_player_disconnected")
-	get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
-	get_tree().disconnect("connected_to_server", self, "_connected_success")
-	get_tree().connect("connected_to_server", self, "_connected_success")
-	get_tree().disconnect("connection_failed", self, "_connected_failure")
-	get_tree().connect("connection_failed", self, "_connected_failure")
-	get_tree().disconnect("server_disconnected", self, "_server_disconnected")
-	get_tree().connect("server_disconnected", self, "_server_disconnected")
+func create_client(_server_ip, _server_port):
+	client.connect("connection_success", self, "_connection_success")
+	client.connect("connection_failure", self, "_connection_failure")
+	client.connect("disconnected", self, "_disconnected")
+	client.start_client(_server_ip, _server_port)
 
-func _player_connected(id):
-	print("_player_connected")
 
-func _player_disconnected(id):
-	print("_player_disconnected")
-
-func _connected_success():
+func _connection_success():
 	print("_connected_success")
 
-func _connected_failure():
+
+func _connection_failure():
 	print("_connected_failure")
 
-func _server_disconnected():
+
+func _disconnected():
 	print("_server_disconnected")

@@ -1,6 +1,8 @@
 #pragma once
 
-enum class state {
+#include <cstddef>
+
+enum state : std::uint16_t {
     connection,
     authentication,
     in_menu
