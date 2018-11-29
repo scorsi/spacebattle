@@ -14,7 +14,7 @@ void load(T &data, std::stringstream &payload) {
 }
 
 template<>
-void load(std::string &data, std::stringstream &payload) {
+void __inline load<std::string>(std::string &data, std::stringstream &payload) {
     cereal::BinaryInputArchive archive(payload);
     serialize::load_string(archive, data);
 }
@@ -26,7 +26,7 @@ void save(const T &data, std::stringstream &payload) {
 }
 
 template<>
-void save(const std::string &data, std::stringstream &payload) {
+void __inline save<std::string>(const std::string &data, std::stringstream &payload) {
     cereal::BinaryInputArchive archive(payload);
     serialize::save_string(archive, data);
 }

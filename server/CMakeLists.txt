@@ -18,6 +18,8 @@ include_directories(src)
 add_executable(spacebattle_server
         src/main.cpp
 
+        src/helpers/serialization.cpp
+
         src/network/server.cpp
         src/server_context.cpp
         src/network/session.cpp
