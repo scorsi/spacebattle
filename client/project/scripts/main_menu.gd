@@ -18,7 +18,10 @@ func _ready():
 	join_form__init()
 	create_form__init()
 	
-	network_type__display()
+	if global.main_menu_error != null:
+		display_error(global.main_menu_error, "network_type__display")
+	else:
+		network_type__display()
 
 
 func hide_all_container():

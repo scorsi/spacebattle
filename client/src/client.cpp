@@ -8,18 +8,19 @@
 namespace godot {
 
 client::~client() {
-    stop_client();
+    disconnect_from_host();
 }
 
 void __unused client::_register_methods() {
     register_method("_ready", &client::ready);
     register_method("_process", &client::process);
-    register_method("start_client", &client::start_client);
-    register_method("stop_client", &client::stop_client);
+    register_method("connect_to_host", &client::connect_to_host);
+    register_method("disconnect_from_host", &client::disconnect_from_host);
     register_method("is_connected", &client::is_connected);
 
     register_property("server_ip", &client::set_server_ip, &client::get_server_ip, godot::String(""));
     register_property("server_port", &client::set_server_port, &client::get_server_port, int64_t(0));
+    register_property("username", &client::set_username, &client::get_username, godot::String(""));
 
     register_signal<client>("connection_success");
     register_signal<client>("connection_failure");
@@ -36,25 +37,9 @@ void client::process() {
     do_read();
 }
 
-void client::start_client(const godot::Variant &__ip_address, const godot::Variant &__port) {
-    if (__ip_address.get_type() == godot::Variant::STRING && __port.get_type() == godot::Variant::INT) {
-        server_ip_ = static_cast<const godot::String &>(__ip_address);
-        server_port_ = static_cast<const int64_t &>(__port);
-
-        context_ = context();
-        connect();
-    }
-}
-
-void client::stop_client() {
-    connected_ = false;
-    if (connection_) connection_->disconnect_from_host();
-    /// Godot has a garbage collector:
-    // delete connection_;
-    // delete peerstream_;
-}
-
-void client::connect() {
+void client::connect_to_host() {
+    context_ = context();
+    context_.set_username(username_.alloc_c_string());
     connection_ = new godot::StreamPeerTCP();
     auto err = connection_->connect_to_host(server_ip_, server_port_);
     if (err == Error::OK) {
@@ -77,6 +62,15 @@ void client::connect() {
                 return;
         }
     }
+}
+
+void client::disconnect_from_host() {
+    connected_ = false;
+    if (connection_) connection_->disconnect_from_host();
+    owner->emit_signal("disconnected");
+    /// Godot has a garbage collector:
+    // delete connection_;
+    // delete peerstream_;
 }
 
 bool client::check_connection() {
@@ -149,6 +143,14 @@ int64_t client::get_server_port() const {
 
 void client::set_server_port(int64_t new_server_port) {
     server_port_ = new_server_port;
+}
+
+godot::String client::get_username() const {
+    return username_;
+}
+
+void client::set_username(godot::String new_username) {
+    username_ = new_username;
 }
 
 bool client::is_connected() const {
