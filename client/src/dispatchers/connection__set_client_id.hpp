@@ -7,8 +7,8 @@
 #include "message.hpp"
 
 namespace dispatchers {
-namespace authentication {
-namespace ask_username {
+namespace connection {
+namespace set_player_id {
 
 bool dispatch(const message &message, godot::client &client, std::stringstream &payload);
 

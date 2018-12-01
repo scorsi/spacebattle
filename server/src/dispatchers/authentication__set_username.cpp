@@ -10,7 +10,7 @@ namespace dispatchers {
 namespace authentication {
 namespace set_username {
 
-bool dispatch_receive(const std::shared_ptr<network::session> &session, std::stringstream &payload) {
+bool dispatch_receive(const network::message &message, const std::shared_ptr<network::session> &session, std::stringstream &payload) {
     events::set_username event;
     helpers::serialization::load(event, payload);
 
@@ -22,6 +22,7 @@ bool dispatch_receive(const std::shared_ptr<network::session> &session, std::str
             });
     if (found == std::end(session_list)) {
         session->get_context()->set_username(event.username);
+        std::cout << event.username << std::endl;
 
         std::stringstream ss;
         helpers::serialization::save(network::message{event::set_username, true}, ss);

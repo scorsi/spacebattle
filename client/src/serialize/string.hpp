@@ -9,7 +9,7 @@ template<class Archive>
 void save_string(Archive &ar, std::string const &s) {
     auto l = s.length();
     ar(std::uint32_t(l));
-    ar(cereal::binary_data<const char *>(s.c_str(), l));
+    ar(cereal::binary_data<char *>(const_cast<char *>(s.c_str()), l));
 }
 
 template<class Archive>

@@ -48,6 +48,10 @@ public:
 
     context &get_context();
 
+    godot::String get_id() const;
+
+    void set_id(godot::String new_id);
+
 private:
     bool check_connection();
 
@@ -58,6 +62,7 @@ private:
     godot::String server_ip_ = "";
     int64_t server_port_ = 0;
     godot::String username_ = "";
+    godot::String id_ = "";
 
     bool connected_ = false;
     godot::StreamPeerTCP *connection_ = nullptr;

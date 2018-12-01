@@ -1,8 +1,11 @@
 extends Node
 
 var username = ""
+var player_id = null
 var current_scene = null
 var main_menu_error = null
+var server_ip = "127.0.0.1"
+var server_port = 42500
 
 func _ready():
 	var root = get_tree().get_root()
@@ -25,6 +28,7 @@ func _deferred_goto_scene(path):
 func create_client(_server_ip, _server_port):
 	client.connect("connection_success", self, "_connection_success")
 	client.connect("connection_failure", self, "_connection_failure")
+	client.connect("connection_ready", self, "_connection_ready")
 	client.connect("disconnected", self, "_disconnected")
 	
 	client.server_ip = _server_ip
@@ -34,14 +38,22 @@ func create_client(_server_ip, _server_port):
 
 
 func _connection_success():
-	pass
+	print("_connection_success")
+
+
+func _connection_ready():
+	print("_connection_ready")
+	player_id = client.player_id
+	goto_scene("res://scenes/lobby.tscn")
 
 
 func _connection_failure():
+	print("_connection_failure")
 	main_menu_error = "Cannot connect to the server"
 	goto_scene("res://scenes/main_menu.tscn")
 
 
 func _disconnected():
+	print("_disconnected")
 	main_menu_error = "Server disconnected"
 	goto_scene("res://scenes/main_menu.tscn")

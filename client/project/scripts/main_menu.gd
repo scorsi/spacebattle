@@ -115,8 +115,9 @@ func join_form__button_pressed():
 
 func join_form__display():
 	hide_all_container()
-	#get_node("join_form_container/ip_address/text_edit").text = ""
-	#get_node("join_form_container/port/text_edit").text = ""
+	get_node("join_form_container/ip_address/text_edit").text = global.server_ip
+	get_node("join_form_container/port/text_edit").text = str(global.server_port)
+	get_node("join_form_container/username/text_edit").text = global.username
 	join_form_container.show()
 	state = "join_form"
 

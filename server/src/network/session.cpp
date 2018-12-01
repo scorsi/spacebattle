@@ -1,6 +1,7 @@
 #include "session.hpp"
 
 #include <string>
+#include <uuid.h>
 #include "server_context.hpp"
 #include "message.hpp"
 #include "dispatcher.hpp"
@@ -12,6 +13,12 @@ session::session(asio::ip::tcp::socket socket, const std::shared_ptr<server_cont
           server_context_(server_context),
           write_packets_() {
     context_ = std::make_shared<session_context>();
+    uuid_t uuid;
+    uuid_generate_random(uuid);
+    char out[37];
+    out[36] = '\0';
+    uuid_unparse(uuid, out);
+    id_ = std::string(out);
 }
 
 void session::start() {
@@ -20,6 +27,7 @@ void session::start() {
 }
 
 void session::deliver(const network::packet &packet) {
+    std::cout << "Delivering packet of size of " << packet.get_body_length() << std::endl;
     bool write_in_progress = !write_packets_.empty();
     write_packets_.push_back(packet);
     if (!write_in_progress) {
@@ -40,7 +48,8 @@ void session::do_read() {
                             asio::buffer(read_packet_.get_body(), read_packet_.get_body_length()),
                             [this, self](std::error_code ec, std::size_t /* length */) {
                                 if (!ec) {
-                                    std::cout << "Successfully read packet" << std::endl;
+                                    std::cout << "Successfully read packet of size of "
+                                              << read_packet_.get_body_length() << std::endl;
                                     dispatcher::dispatch_receive(read_packet_, self);
                                     do_read();
                                 } else if ((asio::error::eof == ec) ||
@@ -89,6 +98,10 @@ std::shared_ptr<session_context> session::get_context() const {
 
 std::shared_ptr<server_context> session::get_server_context() const {
     return server_context_;
+}
+
+const std::string &session::get_id() const {
+    return id_;
 }
 
 }

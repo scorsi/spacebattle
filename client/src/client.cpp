@@ -21,9 +21,11 @@ void __unused client::_register_methods() {
     register_property("server_ip", &client::set_server_ip, &client::get_server_ip, godot::String(""));
     register_property("server_port", &client::set_server_port, &client::get_server_port, int64_t(0));
     register_property("username", &client::set_username, &client::get_username, godot::String(""));
+    register_property("player_id", &client::set_id, &client::get_id, godot::String(""));
 
     register_signal<client>("connection_success");
     register_signal<client>("connection_failure");
+    register_signal<client>("connection_ready");
     register_signal<client>("disconnected");
 }
 
@@ -38,6 +40,8 @@ void client::process() {
 }
 
 void client::connect_to_host() {
+    connected_ = false;
+
     context_ = context();
     context_.set_username(username_.alloc_c_string());
     connection_ = new godot::StreamPeerTCP();
@@ -50,7 +54,6 @@ void client::connect_to_host() {
                 owner->set_process(true);
                 connected_ = true;
                 owner->emit_signal("connection_success");
-                context_.set_state(state::authentication);
                 return;
             case StreamPeerTCP::Status::STATUS_CONNECTING:
                 owner->set_process(true);
@@ -78,7 +81,6 @@ bool client::check_connection() {
         if (connection_->get_status() == StreamPeerTCP::Status::STATUS_CONNECTED) {
             connected_ = true;
             owner->emit_signal("connection_success");
-            context_.set_state(state::authentication);
         } else if (connection_->get_status() == StreamPeerTCP::Status::STATUS_NONE ||
                    connection_->get_status() == StreamPeerTCP::Status::STATUS_ERROR) {
             owner->emit_signal("connection_failure");
@@ -97,6 +99,7 @@ bool client::check_connection() {
 void client::do_read() {
     if (peerstream_->get_available_packet_count() > 0) {
         auto p = peerstream_->get_packet();
+        Godot::print(godot::String((std::string("Got packet of size: ") + std::to_string(p.size())).c_str()));
         auto s = std::string(reinterpret_cast<const char *>(p.read().ptr()), std::size_t(p.size()));
         std::stringstream ss(s);
         message m{};
@@ -159,6 +162,14 @@ bool client::is_connected() const {
 
 context &client::get_context() {
     return context_;
+}
+
+godot::String client::get_id() const {
+    return id_;
+}
+
+void client::set_id(godot::String new_id) {
+    id_ = new_id;
 }
 
 

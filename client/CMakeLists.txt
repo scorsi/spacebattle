@@ -18,6 +18,7 @@ add_executable(spacebattle_client
         src/context.cpp
         src/dispatcher.cpp
 
+        src/dispatchers/connection__set_client_id.cpp
         src/dispatchers/authentication__ask_username.cpp
         src/dispatchers/authentication__set_username.cpp
         )

@@ -5,16 +5,23 @@
 #include <stdexcept>
 #include <core/Godot.hpp>
 #include "helpers/serialization.hpp"
+#include "client.hpp"
 #include "message.hpp"
+#include "dispatchers/connection__set_client_id.hpp"
 #include "dispatchers/authentication__ask_username.hpp"
 #include "dispatchers/authentication__set_username.hpp"
-#include "client.hpp"
 
 namespace dispatcher {
 
-using dispatcher_function= std::function<bool(godot::client &, std::stringstream &)>;
+using dispatcher_function= std::function<bool(const message &, godot::client &, std::stringstream &)>;
 
 static const std::map<state, std::map<event, dispatcher_function>> _dispatchers = { // NOLINT(cert-err58-cpp)
+        {state::connection,
+                {
+                        {event::set_player_id, dispatchers::connection::set_player_id::dispatch}
+                }
+
+        },
         {state::authentication,
                 {
                         {event::ask_username, dispatchers::authentication::ask_username::dispatch},
@@ -46,7 +53,7 @@ bool dispatch(const std::string &packet,
     return find_dispatcher_and_run(
             client.get_context().get_state(), message.type,
             [&](dispatcher_function f) {
-                if (f != nullptr) return f(client, payload);
+                if (f != nullptr) return f(message, client, payload);
                 else return false;
             });
 }

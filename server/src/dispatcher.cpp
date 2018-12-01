@@ -6,6 +6,7 @@
 #include "helpers/serialization.hpp"
 #include "network/session.hpp"
 #include "network/message.hpp"
+#include "dispatchers/connection__set_client_id.hpp"
 #include "dispatchers/authentication__ask_username.hpp"
 #include "dispatchers/authentication__set_username.hpp"
 
@@ -13,7 +14,7 @@ namespace dispatcher {
 
 using dispatcher_send_function_type = bool(const std::shared_ptr<network::session> &);
 
-using dispatcher_receive_function_type = bool(const std::shared_ptr<network::session> &, std::stringstream &);
+using dispatcher_receive_function_type = bool(const network::message &, const std::shared_ptr<network::session> &, std::stringstream &);
 
 struct dispatcher_struct {
     std::function<dispatcher_send_function_type> dispatch_send;
@@ -21,6 +22,16 @@ struct dispatcher_struct {
 };
 
 static const std::map<state, std::map<event, dispatcher_struct>> _dispatchers = { // NOLINT(cert-err58-cpp)
+        {state::connection,
+                {
+                        {event::set_player_id,
+                                {
+                                        dispatchers::connection::set_player_id::dispatch_send,
+                                        nullptr
+                                }
+                        }
+                }
+        },
         {state::authentication,
                 {
                         {event::ask_username,
@@ -84,7 +95,7 @@ bool dispatch_receive(const network::packet &packet,
     auto b = find_dispatcher_and_run(
             session->get_context()->get_state(), message.type,
             [&](const dispatcher_struct &e) {
-                if (e.dispatch_receive != nullptr) return e.dispatch_receive(session, payload);
+                if (e.dispatch_receive != nullptr) return e.dispatch_receive(message, session, payload);
                 else return false;
             });
     std::cout << b << "." << std::endl;

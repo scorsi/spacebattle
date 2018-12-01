@@ -28,7 +28,7 @@ animations = [ {
 "speed": 7.0
 } ]
 
-[node name="Main" type="Node" index="0"]
+[node name="Main" type="Node"]
 
 script = ExtResource( 1 )
 
@@ -38,7 +38,7 @@ position = Vector2( 500, 300 )
 scale = Vector2( 2, 2 )
 frames = ExtResource( 2 )
 animation = "default"
-frame = 27
+frame = 21
 playing = true
 _sections_unfolded = [ "Transform", "Z Index" ]
 
@@ -704,7 +704,7 @@ position = Vector2( 325, 100 )
 scale = Vector2( 0.5, 0.5 )
 frames = SubResource( 1 )
 animation = "default"
-frame = 12
+frame = 1
 playing = true
 _sections_unfolded = [ "Transform" ]
 

@@ -10,9 +10,16 @@ namespace dispatchers {
 namespace authentication {
 namespace set_username {
 
-bool dispatch(godot::client &client, std::stringstream &payload) {
-    client.get_context().set_state(state::in_menu);
-    return true;
+bool dispatch(const message &message, godot::client &client, std::stringstream &payload) {
+    if (message.status) {
+        client.get_context().set_state(state::in_menu);
+        client.owner->emit_signal("connection_ready");
+        return true;
+    } else {
+        // Check for error message
+        client.disconnect_from_host();
+        return false;
+    }
 }
 
 }

@@ -10,7 +10,7 @@ void server_context::add_session(std::shared_ptr<network::session> session) {
     std::cout << "Adding session...";
     session_list_.push_back(session);
     std::cout << " done." << std::endl;
-    session->get_context()->set_state(state::authentication);
+    dispatcher::dispatch_send(event::set_player_id, session);
     dispatcher::dispatch_send(event::ask_username, session);
 }
 

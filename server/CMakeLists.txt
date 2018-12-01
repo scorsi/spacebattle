@@ -24,9 +24,11 @@ add_executable(spacebattle_server
         src/server_context.cpp
         src/network/session.cpp
         src/session_context.cpp
+        src/room.cpp
 
         src/dispatcher.cpp
 
+        src/dispatchers/connection__set_client_id.cpp
         src/dispatchers/authentication__ask_username.cpp
         src/dispatchers/authentication__set_username.cpp
         )
