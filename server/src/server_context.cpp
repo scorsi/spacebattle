@@ -5,6 +5,11 @@
 #include "dispatcher.hpp"
 
 server_context::server_context() {
+    room_list_.push_back(std::make_shared<room>("Official room #1"));
+    room_list_.push_back(std::make_shared<room>("Official room #2"));
+    room_list_.push_back(std::make_shared<room>("Official room #3"));
+    room_list_.push_back(std::make_shared<room>("Official room #4"));
+    room_list_.push_back(std::make_shared<room>("Official room #5"));
 }
 
 void server_context::add_session(std::shared_ptr<network::session> session) {
