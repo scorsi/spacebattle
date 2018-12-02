@@ -10,7 +10,7 @@ namespace dispatchers {
 namespace authentication {
 namespace set_username {
 
-bool dispatch(const message &message, godot::client &client, std::stringstream &payload) {
+bool dispatch(cereal::BinaryInputArchive &, const message &message, godot::client &client) {
     if (message.status) {
         client.get_context().set_state(state::in_menu);
         client.owner->emit_signal("connection_ready");

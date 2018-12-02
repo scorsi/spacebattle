@@ -7,11 +7,10 @@ namespace dispatchers {
 namespace connection {
 namespace set_player_id {
 
-bool dispatch(const message &, godot::client &client, std::stringstream &payload) {
+bool dispatch(cereal::BinaryInputArchive &ar, const message &, godot::client &client) {
     std::string id;
-    helpers::serialization::load(id, payload);
-    client.set_id(id.c_str());
-    godot::Godot::print(godot::String(std::string("Got id: " + id).c_str()));
+    serialize::load_string(ar, id);
+    client.set_id(godot::String(id.c_str()));
     client.get_context().set_state(state::authentication);
 
     std::stringstream ss;

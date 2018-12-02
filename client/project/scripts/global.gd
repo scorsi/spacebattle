@@ -37,6 +37,16 @@ func create_client(_server_ip, _server_port):
 	client.connect_to_host()
 
 
+func disconnect_server():
+	client.disconnect("connection_success", self, "_connection_success")
+	client.disconnect("connection_failure", self, "_connection_failure")
+	client.disconnect("connection_ready", self, "_connection_ready")
+	client.disconnect("disconnected", self, "_disconnected")
+	client.disconnect_from_host()
+	main_menu_error = null
+	goto_scene("res://scenes/main_menu.tscn")
+
+
 func _connection_success():
 	print("_connection_success")
 
@@ -44,7 +54,7 @@ func _connection_success():
 func _connection_ready():
 	print("_connection_ready")
 	player_id = client.player_id
-	goto_scene("res://scenes/lobby.tscn")
+	goto_scene("res://scenes/lobby_menu.tscn")
 
 
 func _connection_failure():

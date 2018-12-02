@@ -10,7 +10,7 @@ namespace dispatchers {
 namespace connection {
 namespace set_player_id {
 
-bool dispatch(const message &message, godot::client &client, std::stringstream &payload);
+bool dispatch(cereal::BinaryInputArchive &, const message &message, godot::client &client);
 
 }
 }

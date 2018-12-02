@@ -151,7 +151,7 @@ func create_form__button_pressed():
 	
 	global.username = username
 	global.create_server(int(port))
-	global.goto_scene("res://scenes/lobby.tscn")
+
 
 
 func create_form__display():

@@ -65,6 +65,7 @@ private:
     godot::String id_ = "";
 
     bool connected_ = false;
+    bool disconnection_ = false;
     godot::StreamPeerTCP *connection_ = nullptr;
     godot::PacketPeerStream *peerstream_ = nullptr;
     context context_;

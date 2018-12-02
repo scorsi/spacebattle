@@ -34,6 +34,7 @@ void client::ready() {
 }
 
 void client::process() {
+    if (disconnection_) return;
     if (!check_connection()) return;
     do_write();
     do_read();
@@ -41,6 +42,7 @@ void client::process() {
 
 void client::connect_to_host() {
     connected_ = false;
+    disconnection_ = false;
 
     context_ = context();
     context_.set_username(username_.alloc_c_string());
@@ -68,6 +70,7 @@ void client::connect_to_host() {
 }
 
 void client::disconnect_from_host() {
+    disconnection_ = true;
     connected_ = false;
     if (connection_) connection_->disconnect_from_host();
     owner->emit_signal("disconnected");
@@ -103,12 +106,10 @@ void client::do_read() {
         auto s = std::string(reinterpret_cast<const char *>(p.read().ptr()), std::size_t(p.size()));
         std::stringstream ss(s);
         message m{};
-        {
-            cereal::BinaryInputArchive archive(ss);
-            archive(m);
-        }
+        cereal::BinaryInputArchive ar(ss);
+        ar(m);
         Godot::print(godot::String((std::to_string(m.type) + " to read").c_str()));
-        dispatcher::dispatch(s, m, *this);
+        dispatcher::dispatch(ar, m, *this);
         Godot::print("Read");
     }
 }

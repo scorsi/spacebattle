@@ -10,7 +10,7 @@ namespace dispatchers {
 namespace authentication {
 namespace ask_username {
 
-bool dispatch(const message &message, godot::client &client, std::stringstream &payload);
+bool dispatch(cereal::BinaryInputArchive &archive, const message &message, godot::client &client);
 
 }
 }

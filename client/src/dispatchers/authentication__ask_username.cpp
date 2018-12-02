@@ -12,7 +12,7 @@ namespace dispatchers {
 namespace authentication {
 namespace ask_username {
 
-bool dispatch(const message &,godot::client &client, std::stringstream &payload) {
+bool dispatch(cereal::BinaryInputArchive &, const message &,godot::client &client) {
     std::stringstream ss;
     helpers::serialization::save(message{event::set_username, true}, ss);
     helpers::serialization::save(events::set_username{client.get_context().get_username()}, ss);

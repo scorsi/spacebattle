@@ -13,7 +13,7 @@
 
 namespace dispatcher {
 
-using dispatcher_function= std::function<bool(const message &, godot::client &, std::stringstream &)>;
+using dispatcher_function= std::function<bool(cereal::BinaryInputArchive &, const message &, godot::client &)>;
 
 static const std::map<state, std::map<event, dispatcher_function>> _dispatchers = { // NOLINT(cert-err58-cpp)
         {state::connection,
@@ -24,7 +24,7 @@ static const std::map<state, std::map<event, dispatcher_function>> _dispatchers 
         },
         {state::authentication,
                 {
-                        {event::ask_username, dispatchers::authentication::ask_username::dispatch},
+                        {event::ask_username,  dispatchers::authentication::ask_username::dispatch},
                         {event::set_username, dispatchers::authentication::set_username::dispatch}
                 }
         }
@@ -40,20 +40,13 @@ bool find_dispatcher_and_run(const state &state,
     }
 }
 
-bool dispatch(const std::string &packet,
+bool dispatch(cereal::BinaryInputArchive &ar,
               const message &message,
               godot::client &client) {
-    std::stringstream payload;
-
-    if (packet.length() - MESSAGE_LENGTH > 0) {
-        payload.write(packet.c_str() + MESSAGE_LENGTH,
-                      packet.length() - MESSAGE_LENGTH);
-    }
-
     return find_dispatcher_and_run(
             client.get_context().get_state(), message.type,
             [&](dispatcher_function f) {
-                if (f != nullptr) return f(message, client, payload);
+                if (f != nullptr) return f(ar, message, client);
                 else return false;
             });
 }
