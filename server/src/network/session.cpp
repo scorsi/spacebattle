@@ -23,6 +23,7 @@ session::session(asio::ip::tcp::socket socket, std::shared_ptr<network::server> 
 
 void session::start() {
     server_->context_->add_session(shared_from_this());
+    dispatcher::dispatch_send(event::set_player_id, dispatch_context{server_, shared_from_this()});
     do_read();
 }
 

@@ -14,12 +14,11 @@ server::server(asio::io_service &io_service,
 }
 
 void server::do_accept() {
-    auto self = shared_from_this();
     acceptor_.async_accept(
             socket_,
-            [this, self](std::error_code ec) {
+            [this](std::error_code ec) {
                 if (!ec) {
-                    auto session = std::make_shared<network::session>(std::move(socket_), self);
+                    auto session = std::make_shared<network::session>(std::move(socket_), shared_from_this());
                     session->start();
                 }
 
