@@ -1,8 +1,13 @@
 extends Node
 
 
+export var lobby_name = ""
+export var lobby_id = ""
+
+
 func _ready():
-	pass
+	$name.text = lobby_name
+	$id.text = lobby_id
 
 
 func _connect():

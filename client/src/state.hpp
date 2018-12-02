@@ -5,5 +5,6 @@
 enum state : std::uint16_t {
     connection,
     authentication,
-    in_menu
+    in_menu,
+    in_lobby
 };

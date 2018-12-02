@@ -17,6 +17,8 @@ void __unused client::_register_methods() {
     register_method("connect_to_host", &client::connect_to_host);
     register_method("disconnect_from_host", &client::disconnect_from_host);
     register_method("is_connected", &client::is_connected);
+    // Send methods:
+    register_method("send_fetch_rooms", &client::send_fetch_rooms);
 
     register_property("server_ip", &client::set_server_ip, &client::get_server_ip, godot::String(""));
     register_property("server_port", &client::set_server_port, &client::get_server_port, int64_t(0));
@@ -27,6 +29,8 @@ void __unused client::_register_methods() {
     register_signal<client>("connection_failure");
     register_signal<client>("connection_ready");
     register_signal<client>("disconnected");
+    // Receive signals:
+    register_signal<client>("result_fetch_rooms", "rooms", GODOT_VARIANT_TYPE_ARRAY);
 }
 
 void client::ready() {
@@ -109,7 +113,8 @@ void client::do_read() {
         cereal::BinaryInputArchive ar(ss);
         ar(m);
         Godot::print(godot::String((std::to_string(m.type) + " to read").c_str()));
-        dispatcher::dispatch_receive(ar, m, *this);
+        if (dispatcher::dispatch_receive(ar, m, *this)) Godot::print("Success");
+        else Godot::print("Failure");
         Godot::print("Read");
     }
 }

@@ -14,6 +14,8 @@ include_directories(
 add_executable(spacebattle_client
         src/gdlibrary.cpp
         src/client.cpp
+        src/client_send_methods.cpp
+        src/room.cpp
 
         src/context.cpp
         src/dispatcher.cpp
@@ -21,5 +23,6 @@ add_executable(spacebattle_client
         src/dispatchers/connection__set_client_id.cpp
         src/dispatchers/authentication__ask_username.cpp
         src/dispatchers/authentication__set_username.cpp
+        src/dispatchers/in_menu__fetch_rooms.cpp
         )
 target_link_libraries(spacebattle_client ${CONAN_LIBS})

@@ -10,6 +10,7 @@
 #include "dispatchers/connection__set_client_id.hpp"
 #include "dispatchers/authentication__ask_username.hpp"
 #include "dispatchers/authentication__set_username.hpp"
+#include "dispatchers/in_menu__fetch_rooms.hpp"
 
 namespace dispatcher {
 
@@ -26,6 +27,11 @@ static const std::map<state, std::map<event, dispatcher_function>> _dispatchers 
                 {
                         {event::ask_username,  dispatchers::authentication::ask_username::dispatch},
                         {event::set_username, dispatchers::authentication::set_username::dispatch}
+                }
+        },
+        {state::in_menu,
+                {
+                        {event::fetch_rooms,   dispatchers::in_menu::fetch_rooms::dispatch}
                 }
         }
 };

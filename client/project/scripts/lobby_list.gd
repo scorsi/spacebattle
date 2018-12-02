@@ -6,7 +6,16 @@ onready var container = $container
 
 
 func _ready():
-	for i in range(5):
-		var new_lobby_elem = lobby_scene.instance()
-		container.add_child(new_lobby_elem)
-		container.add_spacer(false)
+	client.send_fetch_rooms()
+	client.connect("result_fetch_rooms", self, "_on_result_fetch_rooms")
+
+
+func _on_result_fetch_rooms(rooms):
+	for c in container.get_children():
+		c.queue_free()
+	
+	for r in rooms:
+		var new_lobby = lobby_scene.instance()
+		new_lobby.lobby_name = r["name"]
+		new_lobby.lobby_id = r["id"]
+		container.add_child(new_lobby)

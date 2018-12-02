@@ -32,6 +32,12 @@ public:
 
     void disconnect_from_host();
 
+    //
+
+    void send_fetch_rooms();
+
+    //
+
     godot::String get_server_ip() const;
 
     void set_server_ip(godot::String new_server_ip);
