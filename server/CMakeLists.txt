@@ -24,11 +24,19 @@ add_executable(spacebattle_server
         src/server_context.cpp
         src/network/session.cpp
         src/session_context.cpp
-
         src/dispatcher.cpp
+        src/room.cpp
 
+        src/dispatchers/connection__set_client_id.cpp
         src/dispatchers/authentication__ask_username.cpp
         src/dispatchers/authentication__set_username.cpp
+        src/dispatchers/in_menu__create_room.cpp
+        src/dispatchers/in_menu__fetch_room_info.cpp
+        src/dispatchers/in_menu__fetch_rooms.cpp
+        src/dispatchers/in_menu__join_room.cpp
+        src/dispatchers/in_lobby__leave_room.cpp
+        src/dispatchers/in_lobby__player_joined.cpp
+        src/dispatchers/in_lobby__player_leaved.cpp
         )
 
 target_link_libraries(spacebattle_server ${CONAN_LIBS})

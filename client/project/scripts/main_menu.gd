@@ -18,7 +18,10 @@ func _ready():
 	join_form__init()
 	create_form__init()
 	
-	network_type__display()
+	if global.main_menu_error != null:
+		display_error(global.main_menu_error, "network_type__display")
+	else:
+		network_type__display()
 
 
 func hide_all_container():
@@ -112,8 +115,9 @@ func join_form__button_pressed():
 
 func join_form__display():
 	hide_all_container()
-	#get_node("join_form_container/ip_address/text_edit").text = ""
-	#get_node("join_form_container/port/text_edit").text = ""
+	get_node("join_form_container/ip_address/text_edit").text = global.server_ip
+	get_node("join_form_container/port/text_edit").text = str(global.server_port)
+	get_node("join_form_container/username/text_edit").text = global.username
 	join_form_container.show()
 	state = "join_form"
 
@@ -147,7 +151,7 @@ func create_form__button_pressed():
 	
 	global.username = username
 	global.create_server(int(port))
-	global.goto_scene("res://scenes/lobby.tscn")
+
 
 
 func create_form__display():

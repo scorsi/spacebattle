@@ -1,25 +1,34 @@
 #include "session.hpp"
 
 #include <string>
-#include "server_context.hpp"
+#include <uuid.h>
+#include "server.hpp"
 #include "message.hpp"
 #include "dispatcher.hpp"
 
 namespace network {
 
-session::session(asio::ip::tcp::socket socket, const std::shared_ptr<server_context> &server_context)
+session::session(asio::ip::tcp::socket socket, std::shared_ptr<network::server> server)
         : socket_(std::move(socket)),
-          server_context_(server_context),
+          server_(server),
           write_packets_() {
     context_ = std::make_shared<session_context>();
+    uuid_t uuid;
+    uuid_generate_random(uuid);
+    char out[37];
+    out[36] = '\0';
+    uuid_unparse(uuid, out);
+    id_ = std::string(out);
 }
 
 void session::start() {
-    server_context_->add_session(shared_from_this());
+    server_->context_->add_session(shared_from_this());
+    dispatcher::dispatch_send(event::set_player_id, dispatch_context{server_, shared_from_this()});
     do_read();
 }
 
 void session::deliver(const network::packet &packet) {
+    std::cout << "Delivering packet of size of " << packet.get_body_length() << std::endl;
     bool write_in_progress = !write_packets_.empty();
     write_packets_.push_back(packet);
     if (!write_in_progress) {
@@ -40,12 +49,13 @@ void session::do_read() {
                             asio::buffer(read_packet_.get_body(), read_packet_.get_body_length()),
                             [this, self](std::error_code ec, std::size_t /* length */) {
                                 if (!ec) {
-                                    std::cout << "Successfully read packet" << std::endl;
-                                    dispatcher::dispatch_receive(read_packet_, self);
+                                    std::cout << "Successfully read packet of size of "
+                                              << read_packet_.get_body_length() << std::endl;
+                                    dispatcher::dispatch_receive(read_packet_, dispatch_context{self->server_, self});
                                     do_read();
                                 } else if ((asio::error::eof == ec) ||
                                            (asio::error::connection_reset == ec)) {
-                                    server_context_->remove_session(shared_from_this());
+                                    server_->context_->remove_session(shared_from_this());
                                     return;
                                 } else {
                                     std::cout << "Got error while reading: " << ec << std::endl;
@@ -54,7 +64,7 @@ void session::do_read() {
                             });
                 } else if ((asio::error::eof == ec) ||
                            (asio::error::connection_reset == ec)) {
-                    server_context_->remove_session(shared_from_this());
+                    server_->context_->remove_session(shared_from_this());
                     return;
                 } else {
                     std::cout << "Got error while reading: " << ec << std::endl;
@@ -87,8 +97,8 @@ std::shared_ptr<session_context> session::get_context() const {
     return context_;
 }
 
-std::shared_ptr<server_context> session::get_server_context() const {
-    return server_context_;
+const std::string &session::get_id() const {
+    return id_;
 }
 
 }

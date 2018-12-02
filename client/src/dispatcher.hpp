@@ -11,8 +11,8 @@ class client;
 
 namespace dispatcher {
 
-bool dispatch(const std::string &packet,
-              const message &message,
-              godot::client &client);
+bool dispatch_receive(cereal::BinaryInputArchive &archive,
+                      const message &message,
+                      godot::client &client);
 
 }

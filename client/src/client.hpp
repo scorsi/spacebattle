@@ -20,7 +20,7 @@ public:
 
     ~client();
 
-    static void  __unused _register_methods();
+    static void __unused _register_methods();
 
     void ready();
 
@@ -28,9 +28,15 @@ public:
 
     void write(const std::string &message);
 
-    void start_client(const godot::Variant &ip_address, const godot::Variant &port);
+    void connect_to_host();
 
-    void stop_client();
+    void disconnect_from_host();
+
+    //
+
+    void send_fetch_rooms();
+
+    //
 
     godot::String get_server_ip() const;
 
@@ -40,13 +46,19 @@ public:
 
     void set_server_port(int64_t new_server_ip);
 
+    godot::String get_username() const;
+
+    void set_username(godot::String new_username);
+
     bool is_connected() const;
 
     context &get_context();
 
-private:
-    void connect();
+    godot::String get_id() const;
 
+    void set_id(godot::String new_id);
+
+private:
     bool check_connection();
 
     void do_read();
@@ -55,7 +67,11 @@ private:
 
     godot::String server_ip_ = "";
     int64_t server_port_ = 0;
+    godot::String username_ = "";
+    godot::String id_ = "";
+
     bool connected_ = false;
+    bool disconnection_ = false;
     godot::StreamPeerTCP *connection_ = nullptr;
     godot::PacketPeerStream *peerstream_ = nullptr;
     context context_;

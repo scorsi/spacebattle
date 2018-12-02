@@ -78,9 +78,31 @@ A room is formatted as follow: `<id:int64><name:string><status:int16><game-type:
 
 ## Operations
 
-### `0101` **ask_username** (server → client)
+### `0001` **set_client_id** (server → client → server)
 
-Only sent by the server to the client, it allow the server to ask the client username.
+Sent by the server to the client, it allow the client to know its id. The server must respond without payload and with `status` to true to passe to the `authentication` state. 
+
+#### Payload
+
+##### Server
+
+`<id:string>`
+
+- `id` : The client id.
+
+#### Errors
+
+##### Server
+
+- `01` **unexpected_message** : The server doesn't expect this message from the client
+
+##### Client
+
+No available error
+
+### `0101` **ask_username** (server → client)
+
+Only sent by the server to the client during the `authentication` state, it allow the server to ask the client username.
 
 #### Payload
 
@@ -98,11 +120,13 @@ No payload.
 
 No available error
 
-### `0102` **set_username** (client → server → client)
+### `0102` **set_username** (client → server → client)
 
 Sent by the client after the `ask_username` command sent by the server, it allow the client to set its username.
 
-The server should respond with the status `OK` if everything is good. If the status code is `ERROR`, the client must send another valid username until the status is `OK`.
+The server should respond with the status `OK` if everything is good and the client should passe to the `in_menu` state.
+
+If the status code is `ERROR`, the client must send another valid username until the status is `OK`.
 
 #### Payload
 
@@ -132,7 +156,7 @@ No payload.
 
 No available error
 
-### `0201` **fetch_rooms** (client → server → client)
+### `0201` **fetch_rooms** (client → server → client)
 
 Sent by the client, it allow the client to get all available rooms.
 
@@ -162,7 +186,7 @@ _Note: may change in the future._
 
 No available error
 
-### `0202` **fetch_room_info** (client → server → client)
+### `0202` **fetch_room_info** (client → server → client)
 
 Sent by the client, it allow to fetch all info in a room as the players.
 
@@ -196,7 +220,7 @@ _Note: may change in the future._
 
 No available error
 
-### `0203` **create_room** (client → server → client)
+### `0203` **create_room** (client → server → client)
 
 Sent by the client, it allow the client to create a new room.
 
@@ -232,7 +256,7 @@ Sent by the client, it allow the client to create a new room.
 
 No available error
 
-### `0204` **join_room** (client → server → client)
+### `0204` **join_room** (client → server → client)
 
 Sent by the client, it allow the client to join a room thanks to its id.
 
@@ -264,7 +288,7 @@ No payload.
 
 No available error
 
-### `0205` **leave_room** (client → server → client)
+### `0301` **leave_room** (client → server → client)
 
 Sent by the client, it allow the client to leave the actual connected room.
 

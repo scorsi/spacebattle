@@ -27,7 +27,7 @@ void save(const T &data, std::stringstream &payload) {
 
 template<>
 void __inline save<std::string>(const std::string &data, std::stringstream &payload) {
-    cereal::BinaryInputArchive archive(payload);
+    cereal::BinaryOutputArchive archive(payload);
     serialize::save_string(archive, data);
 }
 

@@ -54,10 +54,13 @@ env.Append(CPPPATH=['.', 'src/', "godot_headers/", 'godot-cpp/include/', 'godot-
 env.Append(LIBPATH="godot-cpp/bin")
 env.Append(LIBS=["godot-cpp" + "." + platform + "." + str(bits)])
 
-sources = []
-add_sources(sources, "src")
+sources1 = []
+add_sources(sources1, "src")
+sources2 = []
+for filename in sources1:
+    sources2.append('build/scons/' + filename.split('src')[1])
 
 env.MergeFlags(conanflags)
-
-library = env.SharedLibrary(target=final_lib_path + 'libgdclient', source=sources)
+env.VariantDir('build/scons', 'src', duplicate=0)
+library = env.SharedLibrary(target=final_lib_path + 'libgdclient', source=sources2)
 Default(library)

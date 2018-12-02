@@ -9,10 +9,10 @@ namespace dispatchers {
 namespace authentication {
 namespace ask_username {
 
-bool dispatch_send(const std::shared_ptr<network::session> &session) {
+bool dispatch_send(const dispatch_context &context) {
     std::stringstream ss;
     helpers::serialization::save(network::message{event::ask_username, true}, ss);
-    session->deliver(network::packet::create_from_stream(ss));
+    context.session->deliver(network::packet::create_from_stream(ss));
     return true;
 }
 

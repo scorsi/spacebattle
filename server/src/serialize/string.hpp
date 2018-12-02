@@ -6,16 +6,15 @@
 namespace serialize {
 
 template<class Archive>
-void save_string(Archive &ar, std::string const &s) {
+void save_string(Archive &ar, const std::string &s) {
     auto l = s.length();
-    //save_uint32t(ar, std::uint32_t(l));
-    ar(l, cereal::binary_data<char *>(const_cast<char *>(s.c_str()), l));
+    ar(std::uint32_t(l));
+    ar(cereal::binary_data<const char *>(s.c_str(), l));
 }
 
 template<class Archive>
 void load_string(Archive &ar, std::string &s) {
     std::uint32_t l = 0;
-    //load_uint32t(ar, l);
     ar(l);
     char cs[l + 1];
     cs[l] = '\0';
