@@ -4,6 +4,8 @@
 
 room::room(const std::string &name)
         : name_(name),
+          status_(status::WAITING_FOR_PLAYER),
+          game_type_(game_type::CLASSIC),
           players_() {
     uuid_t uuid;
     uuid_generate_random(uuid);
@@ -31,4 +33,20 @@ const std::list<std::shared_ptr<network::session>> &room::get_players() const {
 
 std::list<std::shared_ptr<network::session>> &room::get_players() {
     return players_;
+}
+
+room::status room::get_status() const {
+    return status_;
+}
+
+void room::set_status(room::status status_) {
+    status_ = status_;
+}
+
+room::game_type room::get_game_type() const {
+    return game_type_;
+}
+
+void room::set_game_type(room::game_type game_type_) {
+    game_type_ = game_type_;
 }

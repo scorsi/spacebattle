@@ -17,7 +17,7 @@ class session
     friend network::server;
 
 public:
-    session(asio::ip::tcp::socket socket, const std::shared_ptr<server> &server);
+    session(asio::ip::tcp::socket socket, std::shared_ptr<network::server> server);
 
     void deliver(const network::packet &packet);
 
@@ -34,7 +34,7 @@ private:
 
     asio::ip::tcp::socket socket_;
     std::shared_ptr<session_context> context_;
-    std::shared_ptr<server> server_;
+    std::shared_ptr<network::server> server_;
     network::packet read_packet_;
     std::deque<network::packet> write_packets_;
     std::string id_;

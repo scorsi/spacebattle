@@ -36,7 +36,7 @@ static const std::map<state, std::map<event, dispatcher_struct>> _dispatchers = 
                         {event::set_player_id,
                                 {
                                         dispatchers::connection::set_player_id::dispatch_send,
-                                        nullptr
+                                        dispatchers::connection::set_player_id::dispatch_receive
                                 }
                         }
                 }

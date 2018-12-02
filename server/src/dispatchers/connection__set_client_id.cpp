@@ -14,12 +14,11 @@ bool dispatch_send(const dispatch_context &context) {
     helpers::serialization::save(context.session->get_id(), ss);
     context.session->deliver(network::packet::create_from_stream(ss));
 
-    context.session->get_context()->set_state(state::authentication);
-
     return true;
 }
 
 bool dispatch_receive(const network::message &message, const dispatch_context &context, std::stringstream &payload) {
+    context.session->get_context()->set_state(state::authentication);
     authentication::ask_username::dispatch_send(context);
     return true;
 }

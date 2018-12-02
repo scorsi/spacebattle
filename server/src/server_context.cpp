@@ -1,6 +1,7 @@
 #include "server_context.hpp"
 
 #include <iostream>
+#include "network/session.hpp"
 #include "dispatcher.hpp"
 
 server_context::server_context() {
@@ -10,11 +11,10 @@ void server_context::add_session(std::shared_ptr<network::session> session) {
     std::cout << "Adding session...";
     session_list_.push_back(session);
     std::cout << " done." << std::endl;
-    dispatcher::dispatch_send(event::set_player_id, session);
 }
 
-void server_context::add_romm(std::shared_ptr<room> room) {
-    room_list_.push_back(std::move(room));
+void server_context::add_room(std::shared_ptr<room> room) {
+    room_list_.push_back(room);
 }
 
 bool server_context::remove_session(const std::shared_ptr<network::session> &session) {
@@ -41,4 +41,8 @@ void server_context::broadcast(const network::packet &packet) {
 
 const std::list<std::shared_ptr<network::session>> &server_context::get_session_list() const {
     return session_list_;
+}
+
+const std::list<std::shared_ptr<room>> &server_context::get_room_list() const {
+    return room_list_;
 }

@@ -6,7 +6,7 @@
 namespace network {
 
 class server
-        : public std::enable_shared_from_this<session> {
+        : public std::enable_shared_from_this<server> {
     friend network::session;
 
 public:

@@ -8,7 +8,7 @@
 
 namespace network {
 
-session::session(asio::ip::tcp::socket socket, const std::shared_ptr<server> &server)
+session::session(asio::ip::tcp::socket socket, std::shared_ptr<network::server> server)
         : socket_(std::move(socket)),
           server_(server),
           write_packets_() {
