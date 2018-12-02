@@ -22,7 +22,6 @@ bool dispatch_receive(const network::message &message, const dispatch_context &c
             });
     if (found == std::end(session_list)) {
         context.session->get_context()->set_username(event.username);
-        std::cout << event.username << std::endl;
 
         std::stringstream ss;
         helpers::serialization::save(network::message{event::set_username, true}, ss);
