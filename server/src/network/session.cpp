@@ -2,15 +2,15 @@
 
 #include <string>
 #include <uuid.h>
-#include "server_context.hpp"
+#include "server.hpp"
 #include "message.hpp"
 #include "dispatcher.hpp"
 
 namespace network {
 
-session::session(asio::ip::tcp::socket socket, const std::shared_ptr<server_context> &server_context)
+session::session(asio::ip::tcp::socket socket, const std::shared_ptr<server> &server)
         : socket_(std::move(socket)),
-          server_context_(server_context),
+          server_(server),
           write_packets_() {
     context_ = std::make_shared<session_context>();
     uuid_t uuid;
@@ -22,7 +22,7 @@ session::session(asio::ip::tcp::socket socket, const std::shared_ptr<server_cont
 }
 
 void session::start() {
-    server_context_->add_session(shared_from_this());
+    server_->context_->add_session(shared_from_this());
     do_read();
 }
 
@@ -50,11 +50,11 @@ void session::do_read() {
                                 if (!ec) {
                                     std::cout << "Successfully read packet of size of "
                                               << read_packet_.get_body_length() << std::endl;
-                                    dispatcher::dispatch_receive(read_packet_, self);
+                                    dispatcher::dispatch_receive(read_packet_, dispatch_context{self->server_, self});
                                     do_read();
                                 } else if ((asio::error::eof == ec) ||
                                            (asio::error::connection_reset == ec)) {
-                                    server_context_->remove_session(shared_from_this());
+                                    server_->context_->remove_session(shared_from_this());
                                     return;
                                 } else {
                                     std::cout << "Got error while reading: " << ec << std::endl;
@@ -63,7 +63,7 @@ void session::do_read() {
                             });
                 } else if ((asio::error::eof == ec) ||
                            (asio::error::connection_reset == ec)) {
-                    server_context_->remove_session(shared_from_this());
+                    server_->context_->remove_session(shared_from_this());
                     return;
                 } else {
                     std::cout << "Got error while reading: " << ec << std::endl;
@@ -94,10 +94,6 @@ void session::do_write() {
 
 std::shared_ptr<session_context> session::get_context() const {
     return context_;
-}
-
-std::shared_ptr<server_context> session::get_server_context() const {
-    return server_context_;
 }
 
 const std::string &session::get_id() const {

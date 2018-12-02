@@ -8,12 +8,10 @@
 #include "dispatch_context.hpp"
 
 namespace dispatchers {
-namespace connection {
-namespace set_player_id {
+namespace in_lobby {
+namespace player_leaved {
 
 bool dispatch_send(const dispatch_context &context);
-
-bool dispatch_receive(const network::message &message, const dispatch_context &context, std::stringstream &payload);
 
 }
 }

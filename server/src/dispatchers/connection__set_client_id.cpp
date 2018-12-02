@@ -8,19 +8,19 @@ namespace dispatchers {
 namespace connection {
 namespace set_player_id {
 
-bool dispatch_send(const std::shared_ptr<network::session> &session) {
+bool dispatch_send(const dispatch_context &context) {
     std::stringstream ss;
     helpers::serialization::save(network::message{event::set_player_id, true}, ss);
-    helpers::serialization::save(session->get_id(), ss);
-    session->deliver(network::packet::create_from_stream(ss));
+    helpers::serialization::save(context.session->get_id(), ss);
+    context.session->deliver(network::packet::create_from_stream(ss));
 
-    session->get_context()->set_state(state::authentication);
+    context.session->get_context()->set_state(state::authentication);
 
     return true;
 }
 
-bool dispatch_receive(const network::message &message, const std::shared_ptr<network::session> &session, std::stringstream &payload) {
-    authentication::ask_username::dispatch_send(session);
+bool dispatch_receive(const network::message &message, const dispatch_context &context, std::stringstream &payload) {
+    authentication::ask_username::dispatch_send(context);
     return true;
 }
 

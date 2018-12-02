@@ -5,9 +5,14 @@
 
 namespace network {
 
-class server {
+class server
+        : public std::enable_shared_from_this<session> {
+    friend network::session;
+
 public:
     server(asio::io_service &io_service, const asio::ip::tcp::endpoint &endpoint);
+
+    std::shared_ptr<server_context> get_context() const;
 
 private:
     void do_accept();

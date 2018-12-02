@@ -18,12 +18,16 @@ void server::do_accept() {
             socket_,
             [this](std::error_code ec) {
                 if (!ec) {
-                    auto session = std::make_shared<network::session>(std::move(socket_), context_);
+                    auto session = std::make_shared<network::session>(std::move(socket_), shared_from_this());
                     session->start();
                 }
 
                 do_accept();
             });
+}
+
+std::shared_ptr<server_context> server::get_context() const {
+    return context_;
 }
 
 }
