@@ -40,9 +40,9 @@ bool find_dispatcher_and_run(const state &state,
     }
 }
 
-bool dispatch(cereal::BinaryInputArchive &ar,
-              const message &message,
-              godot::client &client) {
+bool dispatch_receive(cereal::BinaryInputArchive &ar,
+                      const message &message,
+                      godot::client &client) {
     return find_dispatcher_and_run(
             client.get_context().get_state(), message.type,
             [&](dispatcher_function f) {

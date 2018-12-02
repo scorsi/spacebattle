@@ -109,7 +109,7 @@ void client::do_read() {
         cereal::BinaryInputArchive ar(ss);
         ar(m);
         Godot::print(godot::String((std::to_string(m.type) + " to read").c_str()));
-        dispatcher::dispatch(ar, m, *this);
+        dispatcher::dispatch_receive(ar, m, *this);
         Godot::print("Read");
     }
 }
