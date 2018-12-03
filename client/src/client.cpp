@@ -19,6 +19,8 @@ void __unused client::_register_methods() {
     register_method("is_connected", &client::is_connected);
     // Send methods:
     register_method("send_fetch_rooms", &client::send_fetch_rooms);
+    register_method("send_join_room", &client::send_join_room);
+    register_method("send_create_room", &client::send_create_room);
 
     register_property("server_ip", &client::set_server_ip, &client::get_server_ip, godot::String(""));
     register_property("server_port", &client::set_server_port, &client::get_server_port, int64_t(0));
@@ -31,6 +33,8 @@ void __unused client::_register_methods() {
     register_signal<client>("disconnected");
     // Receive signals:
     register_signal<client>("result_fetch_rooms", "rooms", GODOT_VARIANT_TYPE_ARRAY);
+    register_signal<client>("result_join_room");
+    register_signal<client>("result_create_room", "id", GODOT_VARIANT_TYPE_INT);
 }
 
 void client::ready() {

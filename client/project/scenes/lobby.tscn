@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scripts/lobby.gd" type="Script" id=1]
 
-[node name="lobby" type="Container" index="0"]
+[node name="lobby" type="Container"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -21,8 +21,10 @@ script = ExtResource( 1 )
 _sections_unfolded = [ "Rect" ]
 lobby_name = ""
 lobby_id = ""
+lobby_players = 0
+lobby_max_players = 2
 
-[node name="name" type="RichTextLabel" parent="." index="0"]
+[node name="lobby_name" type="RichTextLabel" parent="." index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -51,7 +53,7 @@ selection_enabled = false
 override_selected_font_color = false
 _sections_unfolded = [ "Rect" ]
 
-[node name="id" type="RichTextLabel" parent="." index="1"]
+[node name="lobby_id" type="RichTextLabel" parent="." index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -80,7 +82,7 @@ selection_enabled = false
 override_selected_font_color = false
 _sections_unfolded = [ "Hint", "Rect" ]
 
-[node name="players" type="RichTextLabel" parent="." index="2"]
+[node name="lobby_players" type="RichTextLabel" parent="." index="2"]
 
 anchor_left = 0.0
 anchor_top = 0.0

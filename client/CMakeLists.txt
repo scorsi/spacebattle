@@ -24,5 +24,7 @@ add_executable(spacebattle_client
         src/dispatchers/authentication__ask_username.cpp
         src/dispatchers/authentication__set_username.cpp
         src/dispatchers/in_menu__fetch_rooms.cpp
+        src/dispatchers/in_menu__create_room.cpp
+        src/dispatchers/in_menu__join_room.cpp
         )
 target_link_libraries(spacebattle_client ${CONAN_LIBS})

@@ -5,9 +5,13 @@ export(PackedScene) var lobby_scene
 onready var container = $container
 
 
-func _ready():
+func refresh_lobbies():
 	client.send_fetch_rooms()
+
+
+func _ready():
 	client.connect("result_fetch_rooms", self, "_on_result_fetch_rooms")
+	refresh_lobbies()
 
 
 func _on_result_fetch_rooms(rooms):

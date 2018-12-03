@@ -27,6 +27,8 @@ public:
 
     void add_player(std::shared_ptr<network::session> player);
 
+    void remove_player(std::shared_ptr<network::session> player);
+
     const std::string &get_id() const;
 
     const std::string &get_name() const;

@@ -5,7 +5,7 @@
 [ext_resource path="res://scenes/lobby_list.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/lobby.tscn" type="PackedScene" id=4]
 
-[node name="Main" type="Node"]
+[node name="Main" type="Node" index="0"]
 
 script = ExtResource( 1 )
 
@@ -15,7 +15,7 @@ position = Vector2( 500, 300 )
 scale = Vector2( 2, 2 )
 frames = ExtResource( 2 )
 animation = "default"
-frame = 1
+frame = 20
 playing = true
 _sections_unfolded = [ "Transform" ]
 
@@ -211,15 +211,50 @@ margin_right = 900.0
 margin_bottom = 500.0
 lobby_scene = ExtResource( 4 )
 
-[node name="create_lobby" type="Button" parent="." index="5"]
+[node name="lobby_name" type="TextEdit" parent="." index="5"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 100.0
-margin_top = 540.0
+margin_top = 535.0
 margin_right = 250.0
+margin_bottom = 565.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+text = ""
+readonly = false
+highlight_current_line = false
+syntax_highlighting = false
+show_line_numbers = false
+highlight_all_occurrences = false
+override_selected_font_color = false
+context_menu_enabled = true
+smooth_scrolling = false
+v_scroll_speed = 80.0
+hiding_enabled = 0
+wrap_lines = false
+caret_block_mode = false
+caret_blink = false
+caret_blink_speed = 0.65
+caret_moving_by_right_click = true
+_sections_unfolded = [ "Rect" ]
+
+[node name="create_lobby" type="Button" parent="." index="6"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 260.0
+margin_top = 540.0
+margin_right = 410.0
 margin_bottom = 560.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -237,8 +272,38 @@ flat = false
 align = 1
 _sections_unfolded = [ "Rect" ]
 
+[node name="fetch_lobbies" type="Button" parent="." index="7"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 420.0
+margin_top = 540.0
+margin_right = 570.0
+margin_bottom = 560.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Refresh lobby list"
+flat = false
+align = 1
+_sections_unfolded = [ "Rect" ]
+
 [connection signal="pressed" from="toggle_server_info" to="." method="_on_toggle_server_info_pressed"]
 
 [connection signal="pressed" from="disconnect" to="." method="_on_disconnect_pressed"]
+
+[connection signal="pressed" from="create_lobby" to="." method="_on_create_lobby_pressed"]
+
+[connection signal="pressed" from="fetch_lobbies" to="." method="_on_fetch_lobbies_pressed"]
 
 

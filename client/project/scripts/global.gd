@@ -8,6 +8,11 @@ var server_ip = "127.0.0.1"
 var server_port = 42500
 
 func _ready():
+	client.connect("connection_success", self, "_connection_success")
+	client.connect("connection_failure", self, "_connection_failure")
+	client.connect("connection_ready", self, "_connection_ready")
+	client.connect("disconnected", self, "_disconnected")
+	
 	var root = get_tree().get_root()
 	current_scene = root.get_child(root.get_child_count() -1)
 	set_process(false)
@@ -26,11 +31,6 @@ func _deferred_goto_scene(path):
 
 
 func create_client(_server_ip, _server_port):
-	client.connect("connection_success", self, "_connection_success")
-	client.connect("connection_failure", self, "_connection_failure")
-	client.connect("connection_ready", self, "_connection_ready")
-	client.connect("disconnected", self, "_disconnected")
-	
 	client.server_ip = _server_ip
 	client.server_port = _server_port
 	client.username = username
@@ -38,10 +38,6 @@ func create_client(_server_ip, _server_port):
 
 
 func disconnect_server():
-	client.disconnect("connection_success", self, "_connection_success")
-	client.disconnect("connection_failure", self, "_connection_failure")
-	client.disconnect("connection_ready", self, "_connection_ready")
-	client.disconnect("disconnected", self, "_disconnected")
 	client.disconnect_from_host()
 	main_menu_error = null
 	goto_scene("res://scenes/main_menu.tscn")

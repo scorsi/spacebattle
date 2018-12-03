@@ -1,6 +1,7 @@
 #include "room.hpp"
 
 #include <uuid.h>
+#include "network/session.hpp"
 
 room::room(const std::string &name)
         : name_(name),
@@ -17,6 +18,12 @@ room::room(const std::string &name)
 
 void room::add_player(std::shared_ptr<network::session> player) {
     players_.push_back(std::move(player));
+}
+
+void room::remove_player(std::shared_ptr<network::session> player) {
+    players_.remove_if([&player](std::shared_ptr<network::session> other_player) {
+        return player->get_id() == other_player->get_id();
+    });
 }
 
 const std::string &room::get_id() const {

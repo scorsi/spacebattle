@@ -36,6 +36,10 @@ public:
 
     void send_fetch_rooms();
 
+    void send_join_room(godot::String id);
+
+    void send_create_room(godot::String name);
+
     //
 
     godot::String get_server_ip() const;
